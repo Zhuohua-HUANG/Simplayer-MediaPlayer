@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/new">
+        <file>image/audio.png</file>
+        <file>image/close_normal.png</file>
+        <file>image/open_focus.png</file>
+        <file>image/open_normal.png</file>
+        <file>image/pause_focus.png</file>
+        <file>image/pause_normal.png</file>
+        <file>image/pause1_normal.png</file>
+        <file>image/showmaxsizebtn.png</file>
+        <file>image/showminisizebtn.png</file>
+        <file>image/shownormalbtn.png</file>
+        <file>image/start_focus.png</file>
+        <file>image/start_normal.png</file>
+        <file>image/start1_normal.png</file>
+        <file>image/stop_focus.png</file>
+        <file>image/stop_normal.png</file>
+        <file>image/stop1_normal.png</file>
+        <file>image/volume.psd</file>
+        <file>image/volume_mute.png</file>
+        <file>image/volume_normal.png</file>
+        <file>image/back.png</file>
+        <file>image/forward.png</file>
+        <file>image/open.png</file>
+        <file>image/add.png</file>
+    </qresource>
+</RCC>
