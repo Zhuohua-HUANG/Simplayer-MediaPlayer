@@ -22,10 +22,12 @@ signals:
 
     void sig_valueChanged(double);
     void sig_moveValueChanged(double);
+    void sig_mouseLeave();
 
 protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
+    void leaveEvent(QEvent *);
 
 private:
 
