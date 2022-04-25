@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>988</width>
-    <height>518</height>
+    <width>1021</width>
+    <height>521</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,188 +21,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QVideoWidget" name="widget" native="true">
-      <property name="styleSheet">
-       <string notr="true">QVideoWidget#widget
-
-{
-	background-color: rgba(0, 0, 0,90);
-}</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1" rowspan="2">
-     <widget class="QWidget" name="sideBlock" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>200</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>200</width>
-        <height>999999</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QWidget#widget_controller_2
-
-{
-	background-color: rgba(60, 65, 68,160);
-}</string>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_10">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>9</number>
-       </property>
-       <property name="bottomMargin">
-        <number>6</number>
-       </property>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QWidget" name="widget_controller_3" native="true">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>200</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>200</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QWidget#widget_controller_3
-
-{
-	background-color: rgba(60, 65, 68,160);
-}</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_11">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>9</number>
-            </property>
-            <property name="bottomMargin">
-             <number>6</number>
-            </property>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout">
-              <item>
-               <spacer name="horizontalSpacer_3">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QPushButton" name="addFile">
-                <property name="minimumSize">
-                 <size>
-                  <width>24</width>
-                  <height>24</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>24</width>
-                  <height>24</height>
-                 </size>
-                </property>
-                <property name="cursor">
-                 <cursorShape>PointingHandCursor</cursorShape>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QPushButton{ 
-image: url(:new/image/add.png);
-border-radius:0px; 
-} 
-QPushButton:hover{ 
-image: url(:new/image/add.png);
-border-radius:0px; 
-} 
-QPushButton:pressed{ 
-image: url(:new/image/add.png);
-border-radius:0px; 
-}
-</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_6">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QListWidget" name="playList">
-           <property name="autoFillBackground">
-            <bool>true</bool>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QListWidget#playList
-
-{
-	background-color: rgba(60, 65, 68,160);
-}</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-    </item>
     <item row="1" column="0">
      <widget class="QWidget" name="widget_controller" native="true">
       <property name="sizePolicy">
@@ -243,7 +61,7 @@ border-radius:0px;
         <number>6</number>
        </property>
        <item>
-        <layout class="QHBoxLayout" name="video_slide">
+        <layout class="QHBoxLayout" name="video_slide_layout">
          <property name="spacing">
           <number>1</number>
          </property>
@@ -465,6 +283,66 @@ font-size:16px;
           </spacer>
          </item>
          <item>
+          <widget class="QPushButton" name="backward_seconds">
+           <property name="minimumSize">
+            <size>
+             <width>36</width>
+             <height>36</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{ 
+image: url(:new/image/backward_second.png);
+border-radius:0px; 
+}  
+QPushButton:hover{ 
+image: url(:new/image/backward_second.png);
+border-radius:0px; 
+} 
+QPushButton:pressed{ 
+image: url(:new/image/backward_second.png);
+border-radius:0px; 
+}</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="forward_seconds">
+           <property name="minimumSize">
+            <size>
+             <width>36</width>
+             <height>36</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{ 
+image: url(:new/image/forward_second.png);
+border-radius:0px; 
+}  
+QPushButton:hover{ 
+image: url(:new/image/forward_second.png);
+border-radius:0px; 
+} 
+QPushButton:pressed{ 
+image: url(:new/image/forward_second.png);
+border-radius:0px; 
+}</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -478,7 +356,7 @@ font-size:16px;
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="backward_button">
+          <widget class="QPushButton" name="last_video">
            <property name="minimumSize">
             <size>
              <width>36</width>
@@ -594,7 +472,7 @@ border-radius:0px;
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="forward_button">
+          <widget class="QPushButton" name="next_video">
            <property name="minimumSize">
             <size>
              <width>36</width>
@@ -800,13 +678,13 @@ font: 16px &quot;微软雅黑&quot;;
           <widget class="QComboBox" name="comboBox">
            <property name="minimumSize">
             <size>
-             <width>60</width>
+             <width>50</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>60</width>
+             <width>50</width>
              <height>16777215</height>
             </size>
            </property>
@@ -848,6 +726,43 @@ font: 16px &quot;微软雅黑&quot;;
              <string>2.0</string>
             </property>
            </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="addFile">
+           <property name="minimumSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{ 
+image: url(:new/image/add.png);
+border-radius:0px; 
+} 
+QPushButton:hover{ 
+image: url(:new/image/add.png);
+border-radius:0px; 
+} 
+QPushButton:pressed{ 
+image: url(:new/image/add.png);
+border-radius:0px; 
+}
+</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
           </widget>
          </item>
          <item>
@@ -901,6 +816,96 @@ border-radius:0px;
       </layout>
      </widget>
     </item>
+    <item row="0" column="1" rowspan="2">
+     <widget class="QWidget" name="sideBlock" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>999999</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QWidget#widget_controller_2
+
+{
+	background-color: rgba(60, 65, 68,160);
+}</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_10">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>9</number>
+       </property>
+       <property name="bottomMargin">
+        <number>6</number>
+       </property>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QListWidget" name="playList">
+           <property name="autoFillBackground">
+            <bool>true</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QListWidget#playList
+
+{
+	background-color: rgba(60, 65, 68,160);
+}</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QVideoWidget" name="widget" native="true">
+      <property name="styleSheet">
+       <string notr="true">QVideoWidget#widget
+
+{
+	background-color: rgba(0, 0, 0,90);
+}</string>
+      </property>
+      <widget class="QLabel" name="Frame_img">
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>160</y>
+         <width>221</width>
+         <height>131</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel#label{
+	border:5px solid  #242424;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -908,8 +913,8 @@ border-radius:0px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>988</width>
-     <height>25</height>
+     <width>1021</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>

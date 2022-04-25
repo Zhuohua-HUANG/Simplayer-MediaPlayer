@@ -10,6 +10,15 @@ MainWindow::MainWindow(QWidget *parent)
     // 组件初始化
     ui->pause_botton->setVisible(false); // 暂停按钮初始为不可见
     ui->sideBlock->setVisible(false); // 播放列表初始化为不可见
+    this->ui->Frame_img->setVisible(false); // 帧缩略图一开始不可见
+    this->ui->Frame_img->setStyleSheet("QLabel{background-color:rgb(128,128,253);}");
+
+    // 连接鼠标离开视频播放条=>不显示缩略图
+    connect(ui->video_slider,&VideoSlider::sig_mouseLeave,this,[=](){
+        this->ui->Frame_img->setVisible(false);
+    });
+
+
 
     // ui:实现播放和暂停按钮的点击交替: 点击播放时, 显示暂停按钮. 点击暂停按钮, 再显示播放按钮
     connect(ui->play_button,&QPushButton::clicked,this,[=](){
@@ -69,6 +78,20 @@ void MainWindow::test1(double a){
 void MainWindow::test2(double a){
     // feel free to delete this function
     qDebug()<<"鼠标指向的进度条百分比"<<a<<"\n";
+    this->ui->Frame_img->setVisible(true);
+    // 当前鼠标的位置
+    int x=this->mapFromGlobal(QCursor().pos()).x();
+    int y=this->mapFromGlobal(QCursor().pos()).y();
+    int img_width = 200;
+    int img_height = 100;
+    qDebug()<<this->width();
+    if(x+img_width>=this->width()){
+        x-=img_width;
+    }
+    this->ui->Frame_img->setGeometry(x,this->ui->widget_controller->pos().y()-img_height-10,img_width,img_height);
+    this->ui->Frame_img->setStyleSheet("QLabel{background-color:rgb(128,128,253);}");
+
+    qDebug()<<"x,y="<<x<<" "<<y;
 }
 
 

@@ -23,5 +23,7 @@
         <file>image/forward.png</file>
         <file>image/open.png</file>
         <file>image/add.png</file>
+        <file>image/backward_second.png</file>
+        <file>image/forward_second.png</file>
     </qresource>
 </RCC>
