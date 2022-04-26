@@ -17,7 +17,7 @@ public:
     ~VideoSlider();
 
     void setValue(int value);
-
+    double pointingRatio;
 signals:
 
     void sig_valueChanged(double);

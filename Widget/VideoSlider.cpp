@@ -46,13 +46,13 @@ void VideoSlider::mouseMoveEvent(QMouseEvent *event)
 {
 
     m_posX = event->pos().x();
-//    int m_posY = event->pos().y();
-//    qDebug()<<"x,y="<<m_posX<<" "<<m_posY;
 
     double curr_x = double(m_posX);
     double curr_total = double(width());
     double ratio = curr_x/curr_total;
+    pointingRatio = ratio; // 更新当前鼠标指向的值
     emit  sig_moveValueChanged(ratio);
+
     QSlider::mouseMoveEvent(event);
 
 }

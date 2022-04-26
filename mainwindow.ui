@@ -889,8 +889,8 @@ border-radius:0px;
       <widget class="QLabel" name="Frame_img">
        <property name="geometry">
         <rect>
-         <x>230</x>
-         <y>160</y>
+         <x>460</x>
+         <y>80</y>
          <width>221</width>
          <height>131</height>
         </rect>

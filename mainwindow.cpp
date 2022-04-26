@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "Widget/seekFrame.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -7,13 +9,22 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //Screencap 相关
+    // 1, 初始化当前的视频
+    const char* fileName = "C:/Users/24508/demo2.mp4";
+    SeekFrame sf = SeekFrame(fileName,1000,0.5);// 小视频第三个参数设小些, 大视频第三个参数可设无穷大int型整数
+    currVideoSeekFrame = sf; // 初始化seekFrame对象
+    currVideoDuration = sf.formatContext->duration/1000000; // 初始化当前视频的时长
+
+
+
     // 组件初始化
     ui->pause_botton->setVisible(false); // 暂停按钮初始为不可见
     ui->sideBlock->setVisible(false); // 播放列表初始化为不可见
     this->ui->Frame_img->setVisible(false); // 帧缩略图一开始不可见
     this->ui->Frame_img->setStyleSheet("QLabel{background-color:rgb(128,128,253);}");
 
-    // 连接鼠标离开视频播放条=>不显示缩略图
+    // 连接鼠标离开视频播放条不显示screencap
     connect(ui->video_slider,&VideoSlider::sig_mouseLeave,this,[=](){
         this->ui->Frame_img->setVisible(false);
     });
@@ -45,8 +56,6 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
 
-
-
     // volume slider 音量改变信号的demo
     qDebug()<<ui->volume_slider->maximumSize();
     connect(ui->volume_slider,&QSlider::valueChanged,this,[=](){
@@ -57,8 +66,11 @@ MainWindow::MainWindow(QWidget *parent)
     //视频的slider的信号的演示
     // 点击进度条的某个位置, 打印当前位置
     connect(ui->video_slider,SIGNAL(sig_valueChanged(double)),this,SLOT(test1(double)));
-    // 指向进度条的某个位置, 打印当前位置
-    connect(ui->video_slider,SIGNAL(sig_moveValueChanged(double)),this,SLOT(test2(double)));
+    // Screencap演示demo
+    connect(ui->video_slider,SIGNAL(sig_moveValueChanged(double)),this,SLOT(showScreenCap(double)));
+
+
+
 
 }
 
@@ -75,23 +87,35 @@ void MainWindow::test1(double a){
     // feel free to delete this function
     qDebug()<<"鼠标点击的进度条百分比"<<a<<"\n";
 }
-void MainWindow::test2(double a){
-    // feel free to delete this function
-    qDebug()<<"鼠标指向的进度条百分比"<<a<<"\n";
+
+
+void MainWindow::showScreenCap(double ratio){
+    // 根据当前的比例来显示screencap
+    // feel free to alter or delete this function
+    int time = int(currVideoDuration*ratio);
+    qDebug()<<"鼠标指向的进度条百分比"<<ratio<<"指向的秒数(int):"<<time;
+    // 设置screencap可见
     this->ui->Frame_img->setVisible(true);
     // 当前鼠标的位置
     int x=this->mapFromGlobal(QCursor().pos()).x();
-    int y=this->mapFromGlobal(QCursor().pos()).y();
-    int img_width = 200;
+    // screencap固定高度, 宽度按照比例缩放
     int img_height = 100;
-    qDebug()<<this->width();
+    int img_width = img_height*currVideoSeekFrame.codecContext->width/currVideoSeekFrame.codecContext->height;
+    // 处理screencap位置越界的情况
     if(x+img_width>=this->width()){
         x-=img_width;
     }
     this->ui->Frame_img->setGeometry(x,this->ui->widget_controller->pos().y()-img_height-10,img_width,img_height);
-    this->ui->Frame_img->setStyleSheet("QLabel{background-color:rgb(128,128,253);}");
+    // 得到当前时间的frame
+    AVFrame* pFrameRGB = currVideoSeekFrame.getFrame(time);
+    // 将frame转化为 QImage对象
+    QImage image = QImage(pFrameRGB->data[0], pFrameRGB->width, pFrameRGB->height,
+                          pFrameRGB->linesize[0], QImage::Format_RGB888)
+                         .copy().scaled(img_width,img_height);//可选加参数,Qt::IgnoreAspectRatio,Qt::SmoothTransformation
+    // QImage渲染
+    ui->Frame_img->setPixmap(QPixmap::fromImage(image));
+    av_frame_free(&pFrameRGB);
 
-    qDebug()<<"x,y="<<x<<" "<<y;
 }
 
 

@@ -1,5 +1,7 @@
 QT       += core gui
 QT += multimediawidgets
+QT += opengl
+QT += gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,11 +20,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Widget/VideoSlider.cpp \
+    Widget/seekFrame.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     Widget/VideoSlider.h \
+    Widget/seekFrame.h \
     mainwindow.h
 
 FORMS += \
@@ -35,3 +39,26 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     ImageResource.qrc
+
+
+win32: {
+    FFMPEG_HOME=$$PWD/ffmpeg
+#    SDL_HOME=$$PWD/SDL2-2.0.20
+    #设置 ffmpeg 的头文件
+    INCLUDEPATH += $$FFMPEG_HOME/include
+#    INCLUDEPATH += $$SDL_HOME/include
+    #设置导入库的目录一边程序可以找到导入库
+    # -L ：指定导入库的目录
+    # -l ：指定要导入的 库名称
+    LIBS +=  -L$$FFMPEG_HOME/lib \
+             -lavcodec \
+             -lavdevice \
+             -lavfilter \
+            -lavformat \
+            -lavutil \
+            -lpostproc \
+            -lswresample \
+            -lswscale
+#    LIBS +=  -L$$SDL_HOME/lib/x64 -lSDL2 -lSDL2main -lSDL2test
+
+}
