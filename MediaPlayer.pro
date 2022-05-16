@@ -2,6 +2,10 @@ QT       += core gui
 QT += multimediawidgets
 QT += opengl
 QT += gui
+QT += network \
+      xml \
+      multimedia \
+      widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -20,14 +24,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Widget/VideoSlider.cpp \
+    Widget/getAudio.cpp \
     Widget/seekFrame.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    utils.cpp \
+    videoinfo.cpp
 
 HEADERS += \
     Widget/VideoSlider.h \
+    Widget/getAudio.h \
     Widget/seekFrame.h \
-    mainwindow.h
+    mainwindow.h \
+    utils.h \
+    videoinfo.h
 
 FORMS += \
     mainwindow.ui
@@ -59,6 +69,11 @@ win32: {
             -lpostproc \
             -lswresample \
             -lswscale
+    GLFW_HOME=$$PWD/glfw
+    INCLUDEPATH+=$$GLFW_HOME/include
+    DEPENDPATH += $$GLFW_HOME/include
+    LIBS += -lOpenGL32
+    LIBS += -L$$GLFW_HOME/lib-vc2017 -lglfw3dll
 #    LIBS +=  -L$$SDL_HOME/lib/x64 -lSDL2 -lSDL2main -lSDL2test
 
 }

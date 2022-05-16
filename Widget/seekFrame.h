@@ -41,7 +41,7 @@ public:
     // 根据需要的时间: wanted_time 来获取该时间的帧
     AVFrame* getFrame(int wanted_time);
     static void save_rgb_frame(unsigned char* buf, int wrap, int xsize, int ysize, const char* filename)
-    /*把AVFrame对象写入磁盘(不会用到) */
+    /*把AVFrame对象写入磁盘(debug 使用, 不会用到) */
     {
         FILE* f;
         int i;

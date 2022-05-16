@@ -30,9 +30,7 @@ protected:
     void leaveEvent(QEvent *);
 
 private:
-
     int m_posX; // 当前进度条的位置
-
     bool isSliderMoving; // 标志位, 标记是否在播放
 
 };

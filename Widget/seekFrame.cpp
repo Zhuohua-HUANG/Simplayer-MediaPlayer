@@ -19,7 +19,7 @@ void SeekFrame::init(const char* fileName) {
         << "duration" << formatContext->duration
         << "bitrate" << formatContext->bit_rate;
     // 寻找视频流index, 以及视频流的decoder
-    for (int i = 0; i < formatContext->nb_streams; i++)
+    for (int i = 0; i < (int)formatContext->nb_streams; i++)
     {
         AVCodecParameters* localCodecParameters = NULL;
         localCodecParameters = formatContext->streams[i]->codecpar;

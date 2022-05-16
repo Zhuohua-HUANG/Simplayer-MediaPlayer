@@ -6,6 +6,8 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
+#include <utils.h>
+#include <QString>
 #include <inttypes.h>
 extern "C" {
 #include <libavcodec/avcodec.h>
@@ -31,6 +33,16 @@ int main(int argc, char *argv[])
     qDebug()<<avcodec_configuration();
     QApplication a(argc, argv);
 
+//    QVector<QString> *vec = new QVector<QString>;
+//    vec->append("a");
+//    vec->append("b");
+//    vec->append("c");
+//    bool w = writePlayList(*vec,"./data1.dat");
+//    QVector<QString> *vec1 = readPlayList("./data1.dat");
+//    for(int i = 0;i<vec1->size();i++){
+//        qDebug()<<(*vec1)[i];
+//    }
+//    qDebug()<<w;
     MainWindow w;
     w.show();
     return a.exec();

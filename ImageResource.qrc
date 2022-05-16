@@ -25,5 +25,12 @@
         <file>image/add.png</file>
         <file>image/backward_second.png</file>
         <file>image/forward_second.png</file>
+        <file>image/delete.png</file>
+        <file>image/delete_hover.png</file>
+        <file>image/off.png</file>
+        <file>image/on.png</file>
+        <file>image/close.png</file>
+        <file>image/maximize.png</file>
+        <file>image/minimize.png</file>
     </qresource>
 </RCC>
