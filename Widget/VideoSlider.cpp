@@ -39,6 +39,8 @@ void VideoSlider::mousePressEvent(QMouseEvent *event)
     int value = QStyle::sliderValueFromPosition(minimum(), maximum(), event->pos().x(), width());
     setValue(value);
     emit sig_valueChanged(ratio);
+    emit sig_valueChanged_v((qint64)this->value());
+    emit sig_pressed();
 
 }
 

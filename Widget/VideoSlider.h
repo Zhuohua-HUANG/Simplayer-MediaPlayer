@@ -21,8 +21,10 @@ public:
 signals:
 
     void sig_valueChanged(double);
+    void sig_valueChanged_v(qint64);
     void sig_moveValueChanged(double);
     void sig_mouseLeave();
+    void sig_pressed();
 
 protected:
     void mousePressEvent(QMouseEvent *event);

@@ -7,6 +7,7 @@ QT += network \
       multimedia \
       widgets
 
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -23,19 +24,27 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Widget/VideoFrameDisplay.cpp \
     Widget/VideoSlider.cpp \
-    Widget/getAudio.cpp \
     Widget/seekFrame.cpp \
+    audioimage.cpp \
+    getaudio.cpp \
     main.cpp \
     mainwindow.cpp \
+    reversedecode.cpp \
+    reversedisplay.cpp \
     utils.cpp \
     videoinfo.cpp
 
 HEADERS += \
+    Widget/VideoFrameDisplay.h \
     Widget/VideoSlider.h \
-    Widget/getAudio.h \
     Widget/seekFrame.h \
+    audioimage.h \
+    getaudio.h \
     mainwindow.h \
+    reversedecode.h \
+    reversedisplay.h \
     utils.h \
     videoinfo.h
 
@@ -73,7 +82,7 @@ win32: {
     INCLUDEPATH+=$$GLFW_HOME/include
     DEPENDPATH += $$GLFW_HOME/include
     LIBS += -lOpenGL32
-    LIBS += -L$$GLFW_HOME/lib-vc2017 -lglfw3dll
+#    LIBS += -L$$GLFW_HOME/lib-vc2017 -lglfw3dll
 #    LIBS +=  -L$$SDL_HOME/lib/x64 -lSDL2 -lSDL2main -lSDL2test
 
 }

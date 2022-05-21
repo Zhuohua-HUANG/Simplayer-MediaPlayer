@@ -32,5 +32,10 @@
         <file>image/close.png</file>
         <file>image/maximize.png</file>
         <file>image/minimize.png</file>
+        <file>image/off1.png</file>
+        <file>image/on1.png</file>
+        <file>image/playback.png</file>
+        <file>image/playback_hover.png</file>
+        <file>image/video_info.png</file>
     </qresource>
 </RCC>

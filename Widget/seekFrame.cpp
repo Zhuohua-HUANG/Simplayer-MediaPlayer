@@ -1,7 +1,9 @@
 #include "seekFrame.h"
-SeekFrame::SeekFrame(const char* fileName, int maxFindTimes, double minDistance)
+SeekFrame::SeekFrame(QString fileName, int maxFindTimes, double minDistance)
 {
-    init(fileName);
+    std::string fileName_str = fileName.toStdString();
+    const char* fileName_const = fileName_str.c_str();
+    init(fileName_const);
     this->maxFindTimes = maxFindTimes;
     this->minDistance = minDistance;
 }

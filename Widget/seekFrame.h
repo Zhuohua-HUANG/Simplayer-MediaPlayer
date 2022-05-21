@@ -34,7 +34,7 @@ public:
     struct SwsContext* sws_ctx = NULL; // RGB格式转换器
 
     // 构造函数, 用文件名filename, 最大寻找次数maxFindTimes, 以及目标帧和真实帧所在时间的距离
-    SeekFrame(const char* filename, int maxFindTimes, double minDistance);
+    SeekFrame(QString filename, int maxFindTimes, double minDistance);
     SeekFrame(){};
     // 初始化formatContext,codecContext,sws_ctx,等等
     void init(const char* filename);
