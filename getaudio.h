@@ -5,7 +5,7 @@
 
 #include<iostream>
 #include<fstream>
-
+#include<QString>
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavutil/avutil.h>
@@ -28,14 +28,14 @@ public:
     int audioStreamIndex;
     AVFormatContext* formatContext = NULL; // 媒体上下文
     AVCodecContext* codecContext = NULL; // 音频流的codev
-    long total_len=0;
-    long duration=0;
+    long total_len=0;//数据长度
+    long duration=0; //时长
 
     // 构造函数, 用文件名filename, 最大寻找次数maxFindTimes, 以及目标帧和真实帧所在时间的距离
-    GetAudio(const char* filename );
+    GetAudio(QString filename );
     GetAudio(){};
     // 初始化formatContext,codecContext,sws_ctx,等等
-    void init(const char* filename);
+    void init(QString filename);
     // 根据需要的时间: wanted_time 来获取该时间的帧
     long loadAudio(int want_t);
 
