@@ -37,5 +37,10 @@
         <file>image/playback.png</file>
         <file>image/playback_hover.png</file>
         <file>image/video_info.png</file>
+        <file>image/info_1.png</file>
+        <file>image/info_2.png</file>
+        <file>image/info_off.png</file>
+        <file>image/info_on.png</file>
+        <file>image/volume_normal_focus.png</file>
     </qresource>
 </RCC>
