@@ -63,7 +63,10 @@ bool isValidVideoFile(QString filename);
 QString getFileName(QString Qpath);
 QVector<QString>* readPlayList(QString defaultPath="./playList.dat");
 bool writePlayList(QVector<QString> ,QString defaultPath="./playList.dat");
+<<<<<<< HEAD
 QImage getAttachedPic(QString fn);
+=======
+>>>>>>> f12a0e527b292aeec47850270843761db3c424b9
 QString getVideoInfo(QString);
 QString getSuffix(QString fileName);
 

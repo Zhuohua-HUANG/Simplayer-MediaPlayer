@@ -96,6 +96,7 @@ bool writePlayList(QVector<QString> playList,QString defaultPath){
 
 }
 
+<<<<<<< HEAD
 QImage getAttachedPic(QString fn){
     // 获取专辑封面
     std::string fn_str = fn.toStdString();
@@ -120,6 +121,9 @@ QImage getAttachedPic(QString fn){
         }
     }
 }
+=======
+
+>>>>>>> f12a0e527b292aeec47850270843761db3c424b9
 
 QString getVideoInfo(QString fn){
     QString info_return="";
@@ -189,6 +193,10 @@ QString getVideoInfo(QString fn){
     avformat_free_context(formatContext);
     delete tag;
     return info_return;
+<<<<<<< HEAD
+=======
+
+>>>>>>> f12a0e527b292aeec47850270843761db3c424b9
 }
 
 QString getSuffix(QString fileName){
