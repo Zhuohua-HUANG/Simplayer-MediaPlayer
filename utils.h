@@ -27,6 +27,7 @@ using namespace std;
 //public:
 //    utils();
 //};
+
 struct IMAGE_FRAME
 {
     QImage image;
@@ -35,7 +36,8 @@ struct IMAGE_FRAME
     AVRational frameRate;
 
 };
-
+static QVector<QString> audioType = {"mp3","wav"};
+static QVector<QString> videoType = {"mp4","wmv","mkv","avi"};
 class Controller
 {
 public:
@@ -61,5 +63,8 @@ bool isValidVideoFile(QString filename);
 QString getFileName(QString Qpath);
 QVector<QString>* readPlayList(QString defaultPath="./playList.dat");
 bool writePlayList(QVector<QString> ,QString defaultPath="./playList.dat");
+QString getVideoInfo(QString);
+QString getSuffix(QString fileName);
 
+int mediaType(QString fileName);
 #endif // UTILS_H

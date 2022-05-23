@@ -1,18 +1,20 @@
 #include "getaudio.h"
 
 using namespace std;
-GetAudio::GetAudio(const char* fileName)
+GetAudio::GetAudio(QString fileName)
 {
     init(fileName);
 }
-void GetAudio::init(const char* fileName) {
-    const char* output = "C:/Users/24508/source/repos/Media-Player/temp/temp.pcm";
+void GetAudio::init(QString fileName) {
+    std::string fn_str = fileName.toStdString();
+    const char* fn = fn_str.c_str();
+    const char* output = "temp.pcm";
     formatContext = avformat_alloc_context();
     AVCodec* codec = NULL;  // 音频流的decoder
     AVCodecParameters* pLocalCodecParameters = NULL;
     audioStreamIndex = -1; // 音频流index
     // 读入文件header
-    if(avformat_open_input(&formatContext,fileName,NULL,NULL)!=0){
+    if(avformat_open_input(&formatContext,fn,NULL,NULL)!=0){
         printf("Couldn't open input stream.\n");
         return ;
     }
@@ -22,12 +24,6 @@ void GetAudio::init(const char* fileName) {
         return ;
     }
     duration=(formatContext->duration)/ AV_TIME_BASE;
-    std::cout <<"++++++++++++++++++++++++++++++++++++++++++++"<<endl;
-    std::cout << "Format: " << formatContext->iformat->name
-        << " duration:" << duration
-        << " bitrate:" << formatContext->bit_rate
-        <<" nbstreams:"<<formatContext->nb_streams
-        <<endl;
     // 寻找音频流index, 以及音频流的decoder
     for (int i = 0; i < formatContext->nb_streams; i++)
     {
@@ -49,10 +45,9 @@ void GetAudio::init(const char* fileName) {
                 codec = localCodec; // 找到了音频流的decoder
                 pLocalCodecParameters = pLocalCodecParameters_temp;
             }
+
         }
     }
-    cout<<"Audio Codec: "<<pLocalCodecParameters->channels<< " channels, sample rate "<< pLocalCodecParameters->sample_rate<<endl;
-
     //利用已有decoder的信息;来分配一个AVCodecContext
     codecContext = avcodec_alloc_context3(codec);
     if (!codecContext) { std::cout << "Failed to allocate memory for AVCodecContext"; return ;}

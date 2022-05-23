@@ -47,7 +47,7 @@ signals:
 public:
     double durationForSeekFrame_S; // 秒
     SeekFrame* currVideoSeekFrame;
-//    GetAudio currGetAudioFrame;
+    GetAudio* currAudioGetFrame;
     QMediaPlayer * mediaPlayer; // 播放器
     QMediaPlaylist *playList;
     videoInfo* video = NULL;
@@ -70,11 +70,10 @@ public:
     void handleMove(QPoint pt);
     ResizeRegion getResizeRegion(QPoint clientPos);
     void setResizeCursor(ResizeRegion region);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent * event);
-    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent * event)override;
+    void mousePressEvent(QMouseEvent *event)override;
 private:
-    GetAudio currAudioGetFrame;
     AudioImage * pAudioImage;
 public slots:
 
@@ -86,6 +85,8 @@ public slots:
 
     /*波形图相关*/
     void showOscillograph(double);
+    void initWaveForm(QString); //初始化currAudioFrame类
+    void deleteWaveForm(); // 释放当前currAudioFrame对象的空间
 
     /*缩略图相关*/
     void initSeekFrame(QString); //初始化seekFrame类
@@ -154,6 +155,7 @@ public:
     // 标志位
     bool loadedVideo;
     bool isReverse; // 标志是否在倒放
+    int currMediaType;
     // 当前正在播放的视频的地址
     QString currentVideoPath;
 

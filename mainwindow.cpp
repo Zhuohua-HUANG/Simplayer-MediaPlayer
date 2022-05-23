@@ -14,6 +14,7 @@
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QShortcut>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -82,18 +83,17 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->video_slider,SIGNAL(sig_moveValueChanged(double)),this,SLOT(showScreenCap(double)));
 
 
-    ui->openGLWidget->setVisible(false);
 }
 void MainWindow::showOscillograph(double ratio){
-    if(loadedVideo){
-        // 根据当前的比例来显示screencap
-        // feel free to alter or delete this function
-        int time = int(durationForSeekFrame_S*ratio);
-        qDebug()<<"showOscillograph: time"<<time;
-        long data_time=currAudioGetFrame.loadAudio(time);
-        //send data to AudioImage
-        pAudioImage->set_startdata(data_time);
-    }
+//    if(loadedVideo){
+//        // 根据当前的比例来显示screencap
+//        // feel free to alter or delete this function
+//        int time = int(durationForSeekFrame_S*ratio);
+//        qDebug()<<"showOscillograph: time"<<time;
+//        long data_time=currAudioGetFrame.loadAudio(time);
+//        //send data to AudioImage
+//        pAudioImage->set_startdata(data_time);
+//    }
 }
 
 MainWindow::~MainWindow()
@@ -118,8 +118,18 @@ void MainWindow::showScreenCap(double ratio){
         int time = int(durationForSeekFrame_S*ratio);
         qDebug()<<"鼠标指向的进度条百分比"<<ratio<<"指向的秒数(int):"<<time;
         // 设置screencap可见
+
         frameLabel->setVisible(true);
         frameLabel->raise(); // 保证它在最前
+
+        // 设置波形图可见
+        int audioImageHeight = 50;
+
+        pAudioImage->setVisible(true);
+        pAudioImage->raise();
+
+
+
         // 当前鼠标的位置
         int x=this->mapFromGlobal(QCursor().pos()).x();
         // screencap固定高度, 宽度按照比例缩放
@@ -130,18 +140,45 @@ void MainWindow::showScreenCap(double ratio){
         if(x+img_width>=this->width()){
             x-=img_width;
         }
+
+
+        pAudioImage->resizeGL(img_width,audioImageHeight);
+        long data_time=currAudioGetFrame->loadAudio(time);
+        pAudioImage->set_startdata(data_time);
+
         frameLabel->setGeometry(x,this->ui->widget_controller->pos().y()-img_height-10,img_width,img_height);
+        pAudioImage->setGeometry(x,this->ui->widget_controller->pos().y()-img_height-10-audioImageHeight,img_width,audioImageHeight);  // 波形图的显示
+
+
+
+        // GL打印，缩略图重加载
+//        this->ui->openGLWidget->setVisible(false);
+//        this->ui->openGLWidget->paintGL();
+//        this->ui->openGLWidget->setVisible(true);
+        pAudioImage->paintGL();
+
+
         // 得到当前时间的frame
-        AVFrame* pFrameRGB = currVideoSeekFrame->getFrame(time);
-        // 将frame转化为 QImage对象
-        QImage image = QImage(pFrameRGB->data[0], pFrameRGB->width, pFrameRGB->height,
-                              pFrameRGB->linesize[0], QImage::Format_RGB888)
-                             .copy();//可选加参数,Qt::IgnoreAspectRatio,Qt::SmoothTransformation
-        // .scaled(img_width,img_height,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
-        // QImage渲染
-        frameLabel->setPixmap(QPixmap::fromImage(image.scaled(img_width,img_height,Qt::IgnoreAspectRatio,Qt::SmoothTransformation)));
-        // 释放掉该frame
-        av_frame_free(&pFrameRGB);
+        if(currMediaType==2){
+            // 是视频才有缩略图
+            AVFrame* pFrameRGB = currVideoSeekFrame->getFrame(time);
+            // 将frame转化为 QImage对象
+            QImage image = QImage(pFrameRGB->data[0], pFrameRGB->width, pFrameRGB->height,
+                                  pFrameRGB->linesize[0], QImage::Format_RGB888)
+                                 .copy();//可选加参数,Qt::IgnoreAspectRatio,Qt::SmoothTransformation
+            // .scaled(img_width,img_height,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            // QImage渲染
+            frameLabel->setPixmap(QPixmap::fromImage(image.scaled(img_width,img_height,Qt::IgnoreAspectRatio,Qt::SmoothTransformation)));
+            // 释放掉该frame
+            av_frame_free(&pFrameRGB);
+        }
+        else{
+            frameLabel->setVisible(false);
+            pAudioImage->setGeometry(x,this->ui->widget_controller->pos().y()-10-audioImageHeight,img_width,audioImageHeight);
+            pAudioImage->paintGL();
+        }
+
+
     }
     else{
         qDebug()<<"还没有初始化视频!";
@@ -173,10 +210,6 @@ void MainWindow::showOutControlWidget()
         mAnimation_ControlWidget->setStartValue(ui->widget_controller->geometry());
     }
 
-//    mAnimation_ControlWidget->setKeyValueAt(0, QRect(0, 0, 00, 00));
-//    mAnimation_ControlWidget->setKeyValueAt(0.4, QRect(20, 250, 20, 30));
-//    mAnimation_ControlWidget->setKeyValueAt(0.8, QRect(100, 250, 20, 30));
-//    mAnimation_ControlWidget->setKeyValueAt(1, QRect(250, 250, 100, 30));
     mAnimation_ControlWidget->setEndValue(QRect(x, y, w, h));
     mAnimation_ControlWidget->setEasingCurve(QEasingCurve::Linear); //设置动画效果
 
@@ -254,6 +287,7 @@ void MainWindow::connect2Player(){
     // 连接鼠标离开视频播放条不显示screencap
     connect(ui->video_slider,&VideoSlider::sig_mouseLeave,this,[=](){
         frameLabel->setVisible(false);
+        pAudioImage->setVisible(false);
     });
     connect(ui->play_button,SIGNAL(clicked()),this,SLOT(playClicked()));
     connect(ui->pause_botton,SIGNAL(clicked()),this,SLOT(playClicked()));
@@ -280,6 +314,7 @@ void MainWindow::connect2Player(){
         qDebug()<<"当前点击的index"<<ui->playList->currentIndex().row();
         QListWidgetItem * item = ui->playList->item(ui->playList->currentIndex().row());
         qDebug()<<"当前点击的index的text"<<item->data(Qt::UserRole).toString();
+
     });
     connect(ui->forward_seconds,&QPushButton::clicked,this,[=](){ skipForwardOrBackward(true);});
     connect(ui->backward_seconds,&QPushButton::clicked,this,[=](){ skipForwardOrBackward(false);});
@@ -293,6 +328,16 @@ void MainWindow::connect2Player(){
     connect(this,SIGNAL(sig_reverseProgress(qint64)),this,SLOT(reverseUpdateDurationInfo(qint64)));
     // 接收倒放的信号, 进行倒放
     connect(this,SIGNAL(sig_reversePlay(QString)),this,SLOT(reversePlay(QString)));
+
+    //快捷键
+    QShortcut *shortCutForPasueAndPlay = new QShortcut(Qt::Key_Space, this );
+    QShortcut *shortCutForSkipForward = new QShortcut(Qt::Key_Right, this );
+    QShortcut *shortCutForSkipBackward = new QShortcut(Qt::Key_Left, this );
+    QShortcut *shortCutForMute = new QShortcut(Qt::CTRL+Qt::Key_M, this );
+    connect(shortCutForMute,&QShortcut::activated,this,[=](){ changeMute();});
+    connect(shortCutForSkipForward,&QShortcut::activated,this,[=](){ skipForwardOrBackward(true);});
+    connect(shortCutForSkipBackward,&QShortcut::activated,this,[=](){ skipForwardOrBackward(false);});
+    connect(shortCutForPasueAndPlay,&QShortcut::activated,this,[=](){playClicked();});
 }
 
 void MainWindow::createExtraWidget(){
@@ -301,6 +346,15 @@ void MainWindow::createExtraWidget(){
     frameLabel->setGeometry(100,100,100,100);
     frameLabel->setVisible(false);
 
+
+    // 创建用于显示波形图的组件
+    pAudioImage = new AudioImage(this);
+    pAudioImage->setObjectName(QString::fromUtf8("openGLWidget"));
+    pAudioImage->setGeometry(QRect(10, 350, 200, 100));
+    pAudioImage->setVisible(false);
+
+
+//    pAudioImage =new AudioImage(ui->openGLWidget);
 //    list->show();
 //    ui->playList->addItem();
 
@@ -401,7 +455,8 @@ void MainWindow::jump(int second){
 }
 
 void MainWindow::addVideoItem(QString fileName){
-    // QList初始化
+    int mediaTypeTemp = mediaType(fileName);
+
     QString shortFilename = getFileName(fileName);
     qDebug()<<"加入!";
 //    QString fileName="xxxx.mp4";
@@ -427,11 +482,21 @@ void MainWindow::addVideoItem(QString fileName){
     pushButton_3->setMinimumSize(QSize(30, 30));
     pushButton_3->setMaximumSize(QSize(30, 30));
     pushButton_3->setStyleSheet(QString::fromUtf8("QPushButton{ \n"
-"image: url(:new/image/video_info.png);\n"
-"border-radius:0px; \n"
-"padding:0px;\n"
-"}  \n"
-""));
+            "image: url(:new/image/info_1.png);\n"
+            "border-radius:0px; \n"
+            "padding:0px;\n"
+            "}  \n"
+            "QPushButton:hover{ \n"
+            "image: url(:new/image/info_2.png);\n"
+            "border-radius:0px; \n"
+            "padding:0px;\n"
+            "} \n"
+            "\n"
+            "QPushButton:checked{ \n"
+            "image: url(:new/image/info_1.png);\n"
+            "} \n"
+            "\n"
+            ""));
 
     horizontalLayout_4->addWidget(pushButton_3);
 
@@ -446,45 +511,52 @@ void MainWindow::addVideoItem(QString fileName){
     pushButton_2->setMinimumSize(QSize(30, 30));
     pushButton_2->setMaximumSize(QSize(30, 30));
     pushButton_2->setStyleSheet(QString::fromUtf8("QPushButton{ \n"
-"image: url(:new/image/delete.png);\n"
-"border-radius:0px; \n"
-"padding:0px;\n"
-"}  \n"
-"QPushButton:hover{ \n"
-"image: url(:new/image/delete_hover.png);\n"
-"border-radius:0px; \n"
-"padding:0px;\n"
-"} \n"
-"\n"
-"QPushButton:checked{ \n"
-"image: url(:new/image/delete.png);\n"
-"} \n"
-"\n"
-""));
+        "image: url(:new/image/delete.png);\n"
+        "border-radius:0px; \n"
+        "padding:0px;\n"
+        "}  \n"
+        "QPushButton:hover{ \n"
+        "image: url(:new/image/delete_hover.png);\n"
+        "border-radius:0px; \n"
+        "padding:0px;\n"
+        "} \n"
+        "\n"
+        "QPushButton:checked{ \n"
+        "image: url(:new/image/delete.png);\n"
+        "} \n"
+        "\n"
+        ""));
 
     horizontalLayout_4->addWidget(pushButton_2);
 
-    QPushButton *pushButton = new QPushButton(widget_3);
-    pushButton->setObjectName(QString::fromUtf8("pushButton"));
-    pushButton->setMinimumSize(QSize(30, 30));
-    pushButton->setMaximumSize(QSize(30, 30));
-    pushButton->setStyleSheet(QString::fromUtf8("QPushButton{ \n"
-"image: url(:new/image/playback.png);\n"
-"border-radius:0px; \n"
-"padding:0px;\n"
-"}  \n"
-"QPushButton:hover{ \n"
-"image: url(:new/image/playback_hover.png);\n"
-"border-radius:0px; \n"
-"padding:0px;\n"
-"} \n"
-"QPushButton:checked{ \n"
-"image: url(:new/image/playback.png);\n"
-"} \n"
-"\n"
-""));
 
-    horizontalLayout_4->addWidget(pushButton);
+    /*倒放按钮*/
+    QPushButton *pushButton = NULL;
+    if(mediaTypeTemp==2){
+        // 说明是视频
+        pushButton = new QPushButton(widget_3);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        pushButton->setMinimumSize(QSize(30, 30));
+        pushButton->setMaximumSize(QSize(30, 30));
+        pushButton->setStyleSheet(QString::fromUtf8("QPushButton{ \n"
+            "image: url(:new/image/playback.png);\n"
+            "border-radius:0px; \n"
+            "padding:0px;\n"
+            "}  \n"
+            "QPushButton:hover{ \n"
+            "image: url(:new/image/playback_hover.png);\n"
+            "border-radius:0px; \n"
+            "padding:0px;\n"
+            "} \n"
+            "QPushButton:checked{ \n"
+            "image: url(:new/image/playback.png);\n"
+            "} \n"
+            "\n"
+            ""));
+
+        horizontalLayout_4->addWidget(pushButton);
+    }
+
 
 
 
@@ -508,11 +580,43 @@ void MainWindow::addVideoItem(QString fileName){
 
         delete Qitem;
     });
+    // 读取视频的信息
+    QString info = getVideoInfo(fileName);
+    // 连接信息键和信息弹窗
+    connect(pushButton_3,&QPushButton::clicked,[=](){
+        QMessageBox msgBox;
+        msgBox.setStyleSheet(
+                    "QMessageBox"
+        "{"
+           " border:none;"
+            "background-color: rgb(255,255,255);"
+            "border-radius: 15px;"
+        "}"
+                  "  QPushButton{ "
+                "    image: url(C:/Users/24508/Downloads/ok.png);"
+               "     border-radius:0px; "
+              "      padding:1px;"
+              "      }  "
+        );
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.button(QMessageBox::Ok)->setText("");
+        msgBox.button(QMessageBox::Ok)->setMinimumSize(QSize(25, 25));
+        msgBox.setIcon(QMessageBox::NoIcon);
+        QIcon * windowIcon = new QIcon("C:/Users/24508/Downloads/info.png");
+        msgBox.setWindowIcon(*windowIcon);
+        msgBox.setWindowTitle("视媒体信息");
+        msgBox.setText(info);
+        msgBox.exec();
+    });
 
     // 连接倒放按钮和信号
-    connect(pushButton,&QPushButton::clicked, this, [=](){
-        emit sig_reversePlay(Qitem->data(Qt::UserRole).toString());
-    });
+    if(pushButton!=NULL){
+        // 说明是视频
+        connect(pushButton,&QPushButton::clicked, this, [=](){
+            emit sig_reversePlay(Qitem->data(Qt::UserRole).toString());
+        });
+    }
+
 }
 
 
@@ -530,10 +634,12 @@ void MainWindow::openFileButtonClicked(){
         }
         if(!isValidVideoFile(filename)){
             QMessageBox::warning(this, tr("Error"),
-                                           tr("打开的文件不是音频格式")
+                                           tr("打开的文件不是音视频格式")
                                            );
             return;
         }
+
+
 
         if(!isReverse)mediaPlayer->pause();
         addVideoItem(filename);
@@ -563,16 +669,22 @@ void MainWindow::openFileButtonClicked(){
 
 void MainWindow::initializeVideo(QString fileName){
     /*用于初始化视频, 无论是正放还是倒放都要用到*/
-
+    currMediaType = mediaType(fileName);
 
     // 记录当前播放的路径
     currentVideoPath = fileName;
     // 初始化SeekFrame
+
     deleteSeekFrame();
     initSeekFrame(fileName);
+    // 初始化波形图
+    deleteWaveForm();
+    initWaveForm(fileName);
+
     // 初始化文件信息
     video = new videoInfo();
     initVideoInfo(fileName);
+
 
 
 
@@ -739,29 +851,39 @@ void MainWindow::initSystem(){
     /*初始化seekFrame*/
     currVideoSeekFrame = NULL;
 
+    /*初始化波形图*/
+    pAudioImage = NULL;
+    currAudioGetFrame = NULL;
+
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *e)
 {
-    QMenu *menu = new QMenu();
+    if(!isReverse&&loadedVideo){
+        QMenu *menu = new QMenu();
+        menu->setFixedWidth(160);
+        menu->addAction(rtText);
+        menu->addSeparator();
+        menu->addAction(rt0_5);
+        menu->addAction(rt0_75);
+        menu->addAction(rt1_0);
+        menu->addAction(rt1_25);
+        menu->addAction(rt1_5);
+        menu->addAction(rt2_0);
+        menu->addAction(rt3_0);
+        menu->exec(e->globalPos());
+        delete menu;
+    }
 
-    menu->setFixedWidth(160);
-    menu->addAction(rtText);
-    menu->addSeparator();
-    menu->addAction(rt0_5);
-    menu->addAction(rt0_75);
-    menu->addAction(rt1_0);
-    menu->addAction(rt1_25);
-    menu->addAction(rt1_5);
-    menu->addAction(rt2_0);
-    menu->addAction(rt3_0);
-    menu->exec(e->globalPos());
-    delete menu;
 }
 
 
 void MainWindow::changePlayingRatio(float rt){
     qDebug()<<"改变速率"<<rt;
+    if(!isReverse && loadedVideo){
+        // 只有在正放的时候, 才能设置播放速率
+        mediaPlayer->setPlaybackRate(qreal(rt));
+    }
 }
 
 void MainWindow::initWdigets(){
@@ -1132,16 +1254,19 @@ void MainWindow::reversePlay(QString fileName){
     highlightInFileList();// 在播放列表中高亮
     initializeVideo(fileName); // 初始化
 
-
+    qDebug()<<"reversePlay1";
     if(isReverse){
+        qDebug()<<"reversePlay2";
         if(m_playerState==QMediaPlayer::StoppedState){
             qDebug()<<"当前在暂停";
             /*此时倒放在暂停,要先解锁*/
             reverseDisplayer->resumeThread();
         }
         // 如果当前正在倒放, 现在要转到下一个视频倒放, 则先清空线程
+        qDebug()<<"reversePlay3";
         quitCurrentReversePlay();
     }
+    qDebug()<<"reversePlay4";
     // 处理倒放视频切换
     int res;
     if(reverseDecoder == NULL && reverseDisplayer == NULL){
@@ -1168,6 +1293,8 @@ void MainWindow::reversePlay(QString fileName){
     reverseDecoder->start();
     reverseDisplayer->start();
     isReverse = true; // 设置倒放标志
+    loadedVideo = true; // 设置加载视频标志
+    m_playerState = QMediaPlayer::PlayingState; // 设置播放中的标志
     // 设置播放按钮样式
     ui->play_button->setVisible(false);
     ui->pause_botton->setVisible(true);
@@ -1274,3 +1401,16 @@ void MainWindow::deleteSeekFrame(){
         currVideoSeekFrame = NULL;
     }
 }
+
+void MainWindow::initWaveForm(QString fileName){
+    // 初始化 currAudioFrame
+    currAudioGetFrame = new GetAudio(fileName);
+}
+
+void MainWindow::deleteWaveForm(){
+    if(this->currAudioGetFrame!=NULL){
+        delete  currAudioGetFrame;
+        currAudioGetFrame = NULL;
+    }
+}
+
