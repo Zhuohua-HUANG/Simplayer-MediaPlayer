@@ -12,7 +12,7 @@ class ReverseDisplay : public QThread
 signals:
     void SendOneFrame(QImage); //输出信号
     void SendTime(qint64);
-    void SendSecond(qint64);
+    void SendSecond(double);
 public:
     QMutex pauseLock;
     volatile bool stop_;

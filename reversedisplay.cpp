@@ -29,10 +29,6 @@ void ReverseDisplay::run(){
         }
         for (auto i = V.rbegin(); i != V.rend(); i++) { // 反向迭代
 
-            //判断是否线程需要退出
-//            ctrl->quitMutex.lock();
-//            if(ctrl->isQuit){ctrl->quitMutex.unlock();return;}
-//            ctrl->quitMutex.unlock();
 
             // 发出信号
             pauseLock.lock(); // 暂停锁
@@ -64,12 +60,14 @@ void ReverseDisplay::run(){
 
             SendOneFrame((*i).image);  // 发送帧信号
             SendTime(qint64((*i).pts)); // 发送时间信号
-            SendSecond(qint64((*i).video_clock)); // 发送以秒为单位的时间信号
+            SendSecond((*i).video_clock); // 发送以秒为单位的时间信号
+
             pauseLock.unlock();
             int delta = int(1000* 1.0 / (double)av_q2d((*i).frameRate));
-            qDebug()<<"DISPLAYER: current pts:"<<(*i).pts<<" time:"<<(*i).video_clock<<"  sleep:"<<delta;
+            //qDebug()<<"DISPLAYER: current pts:"<<(*i).pts<<" time:"<<(*i).video_clock<<"  sleep:"<<delta;
 
             //QThread::msleep(delta);  // 性能原因, 视频帧间距短的时候, sleep时间较少会导致卡顿
+
             QThread::msleep(40);  // 暂时固定住渲染的帧率
         }
     }

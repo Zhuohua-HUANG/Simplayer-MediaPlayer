@@ -68,8 +68,10 @@ void ReverseDecode::run(){
     while (true) {
         qDebug()<<"here1, cur="<<cur<<" i="<<i<<ctrl->isQuit;
         i+=1;
-        if(cur <= 0)cur = 1*deltaPts; // 尚存的问题: seek到开头 (把倒放一直持续下去)
-
+        if(cur <= 0)
+        {
+            cur = 1*deltaPts; // 尚存的问题: seek到开头 (把倒放一直持续下去)
+        }
         //判断是否线程需要退出
         ctrl->quitMutex.lock();
         if(ctrl->isQuit){
@@ -128,7 +130,7 @@ void ReverseDecode::run(){
 
                 V.push_back(image_frame);
                 ctrl->Q_mutex.lock();
-                qDebug()<<"pused pts:"<<SRC_VIDEO_pFrame->pts<<" Qsize:"<<ctrl->Q.size();
+                //qDebug()<<"pused pts:"<<SRC_VIDEO_pFrame->pts<<" Qsize:"<<ctrl->Q.size();
                 ctrl->Q_mutex.unlock();
 
                 //释放包
@@ -224,6 +226,7 @@ void ReverseDecode::reInitialize(){
     video_width = 0;
     video_height = 0;
     deltaPts=-1; // 两个pts 之间的差值(正数)
+    endProcessed = true;
 
 
 }

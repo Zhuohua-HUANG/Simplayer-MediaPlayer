@@ -63,25 +63,13 @@ void VideoFrameDisplay::slotSetOneFrame(QImage img)
 
 }
 
-/*
-工程: QtAV_VideoPlayer
-日期: 2021-03-24
-作者: DS小龙哥
-环境: win10 QT5.12.6 MinGW32
-功能: 获取原图数据
-*/
+
 QImage VideoFrameDisplay::GetImage()
 {
     return src_mImage;
 }
 
-/*
-工程: QtAV_VideoPlayer
-日期: 2021-03-25
-作者: DS小龙哥
-环境: win10 QT5.12.6 MinGW32
-功能: 鼠标双击事件
-*/
+
 void VideoFrameDisplay::mouseDoubleClickEvent(QMouseEvent *e)
 {
     emit s_VideoWidgetEvent(1);

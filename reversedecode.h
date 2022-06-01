@@ -26,6 +26,7 @@ class ReverseDecode : public QThread
 public slots:
     void seek(qint64 pos);
 public:
+    bool endProcessed;
     AVFormatContext *format_ctx = nullptr;
     int video_stream_index = -1;
     AVFrame *RGB24_pFrame = nullptr;

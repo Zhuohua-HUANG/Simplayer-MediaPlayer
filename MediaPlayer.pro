@@ -26,27 +26,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Widget/VideoFrameDisplay.cpp \
     Widget/VideoSlider.cpp \
-    Widget/seekFrame.cpp \
     audioimage.cpp \
     getaudio.cpp \
     main.cpp \
     mainwindow.cpp \
     reversedecode.cpp \
     reversedisplay.cpp \
-    utils.cpp \
-    videoinfo.cpp
+    seekFrame.cpp \
+    utils.cpp
 
 HEADERS += \
     Widget/VideoFrameDisplay.h \
     Widget/VideoSlider.h \
-    Widget/seekFrame.h \
     audioimage.h \
     getaudio.h \
     mainwindow.h \
     reversedecode.h \
     reversedisplay.h \
-    utils.h \
-    videoinfo.h
+    seekFrame.h \
+    utils.h
 
 FORMS += \
     mainwindow.ui

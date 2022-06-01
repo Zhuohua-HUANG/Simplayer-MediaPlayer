@@ -1,7 +1,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "Widget/seekFrame.h"
+#include "seekFrame.h"
 #include "reversedecode.h"
 #include "reversedisplay.h"
 #include "audioimage.h"
@@ -21,45 +21,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    /*
-        现存的问题:
-        1, 播放大视频的时候, 有时会播不出来 demo2.mp4
-    */
+
     setMouseTracking(true);
     this->setWindowFlags(Qt::FramelessWindowHint);
-
-
-    // init
-//    int w = 100;
-//    int heigh
-//    ui->openGLWidget->wid
-//    QString fn = "C:/Users/24508/Videos/demo4.mp4";
-//    std::string fn_str = fn.toStdString();
-//    const char* fn_const = fn_str.c_str();
-//    currAudioGetFrame=GetAudio(fn_const);
-//    pAudioImage =new AudioImage(ui->openGLWidget,ui->openGLWidget->width(),ui->openGLWidget->height());
-//    qDebug()<<ui->openGLWidget->width();
-//    qDebug()<<ui->openGLWidget->height();
-////    setCentralWidget(pAudioImage);
-
-//    //set window size
-//    pAudioImage->setMinimumSize(ui->openGLWidget->width(),ui->openGLWidget->height());
-
-//    //get data
-//    connect(ui->pushButton,&QPushButton::clicked,this,[=](){
-//        for(int i = 1;i<60;i++){
-//            long data_time=currAudioGetFrame.loadAudio(i);
-//            //send data to AudioImage
-//            pAudioImage->set_startdata(data_time);
-//            pAudioImage->paintGL();
-//            QThread::msleep(1000);
-//        }
-//    });
-
-
-
-    //end
-
 
 
     initSystem();
@@ -75,26 +39,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-    // volume slider 音量改变信号的demo
-    qDebug()<<ui->volume_slider->maximumSize();
-
-    // Screencap演示demo
-//    connect(ui->video_slider,SIGNAL(sig_moveValueChanged(double)),this,SLOT(showOscillograph(double)));
-    connect(ui->video_slider,SIGNAL(sig_moveValueChanged(double)),this,SLOT(showScreenCap(double)));
-
 
 }
-void MainWindow::showOscillograph(double ratio){
-//    if(loadedVideo){
-//        // 根据当前的比例来显示screencap
-//        // feel free to alter or delete this function
-//        int time = int(durationForSeekFrame_S*ratio);
-//        qDebug()<<"showOscillograph: time"<<time;
-//        long data_time=currAudioGetFrame.loadAudio(time);
-//        //send data to AudioImage
-//        pAudioImage->set_startdata(data_time);
-//    }
-}
+
 
 MainWindow::~MainWindow()
 {
@@ -105,17 +52,13 @@ void MainWindow::test(){
     qDebug()<<"test here00\n";
 }
 
-//void MainWindow::test1(int a){
-//    // feel free to delete this function
-//    qDebug()<<"鼠标点击的进度条百分比"<<a<<"\n";
-//}
 
 
 void MainWindow::showScreenCap(double ratio){
     if(loadedVideo){
         // 根据当前的比例来显示screencap
         // feel free to alter or delete this function
-        int time = int(durationForSeekFrame_S*ratio);
+        int time = int((double)durationS*ratio);
         qDebug()<<"鼠标指向的进度条百分比"<<ratio<<"指向的秒数(int):"<<time;
         // 设置screencap可见
 
@@ -151,10 +94,6 @@ void MainWindow::showScreenCap(double ratio){
 
 
 
-        // GL打印，缩略图重加载
-//        this->ui->openGLWidget->setVisible(false);
-//        this->ui->openGLWidget->paintGL();
-//        this->ui->openGLWidget->setVisible(true);
         pAudioImage->paintGL();
 
 
@@ -259,6 +198,8 @@ void MainWindow::playClicked(){
 }
 
 void MainWindow::connect2Player(){
+    // 缩略图
+    connect(ui->video_slider,SIGNAL(sig_moveValueChanged(double)),this,SLOT(showScreenCap(double)));
     //关闭, 最大化, 最小化
     connect(ui->close,&QPushButton::clicked,this,[=](){ this->close();});
     connect(ui->minimize,&QPushButton::clicked,this,[=](){ this->setWindowState(Qt::WindowMinimized);});
@@ -338,6 +279,7 @@ void MainWindow::connect2Player(){
     connect(shortCutForSkipForward,&QShortcut::activated,this,[=](){ skipForwardOrBackward(true);});
     connect(shortCutForSkipBackward,&QShortcut::activated,this,[=](){ skipForwardOrBackward(false);});
     connect(shortCutForPasueAndPlay,&QShortcut::activated,this,[=](){playClicked();});
+
 }
 
 void MainWindow::createExtraWidget(){
@@ -354,9 +296,6 @@ void MainWindow::createExtraWidget(){
     pAudioImage->setVisible(false);
 
 
-//    pAudioImage =new AudioImage(ui->openGLWidget);
-//    list->show();
-//    ui->playList->addItem();
 
 }
 
@@ -399,35 +338,33 @@ void MainWindow::reverseUpdateDurationInfo(qint64 currentInfo){
 void MainWindow::updateDurationInfo(qint64 currentInfo){
     /*用于更新当显示的秒数*/
     qDebug()<<"currentInfo"<<currentInfo;
-    qDebug()<<"second_duration"<<video->duration;
+    qDebug()<<"second_duration"<<durationS;
 
     QString tStr;
-    if (currentInfo || video->duration) {
+    if (currentInfo || durationS) {
         QTime currentTime((currentInfo / 3600) % 60, (currentInfo / 60) % 60,
             currentInfo % 60, (currentInfo * 1000) % 1000);
-        QTime totalTime((video->duration / 3600) % 60, (video->duration / 60) % 60,
-            video->duration % 60, (video->duration * 1000) % 1000);
+        QTime totalTime((durationS / 3600) % 60, (durationS/ 60) % 60,
+           durationS % 60, (durationS * 1000) % 1000);
         QString format = "mm:ss";
-        if (video->duration > 3600)
+        if (durationS > 3600)
             format = "hh:mm:ss";
         tStr = currentTime.toString(format) + " / " + totalTime.toString(format);
     }
     qDebug()<<"m_labelDuration"<<tStr;
     ui->current_time->setText(tStr);
     // 若放完了, 则跳转到开头, 并暂停
-    if(currentInfo==video->duration){
+    if(currentInfo==(qint64)durationS){
         mediaPlayer->setPosition(10);
         pause();
     }
 }
 
 void MainWindow::initVideoInfo(QString fileName){
-
-    video->fileName = fileName;
-    video->width = currVideoSeekFrame->video_width; /*这里有问题*/
-    video->height = currVideoSeekFrame->video_width;
-    video->durationMs = (qint64)(currVideoSeekFrame->formatContext->duration/1000);
-    video->duration = (qint64)(currVideoSeekFrame->formatContext->duration/1000000);
+    // 记录当前播放的路径
+    currentVideoPath = fileName;
+    durationMs = (qint64)(currVideoSeekFrame->formatContext->duration/1000);
+    durationS = (qint64)(currVideoSeekFrame->formatContext->duration/1000000);
 }
 
 
@@ -671,8 +608,14 @@ void MainWindow::initializeVideo(QString fileName){
     /*用于初始化视频, 无论是正放还是倒放都要用到*/
     currMediaType = mediaType(fileName);
 
-    // 记录当前播放的路径
-    currentVideoPath = fileName;
+    // 若是音频文件, 则显示封面
+    if(currMediaType==1){
+        QImage cover = getAttachedPic(fileName);
+        ui->reverse_widget->slotSetOneFrame(cover);
+    }
+
+
+
     // 初始化SeekFrame
 
     deleteSeekFrame();
@@ -682,7 +625,6 @@ void MainWindow::initializeVideo(QString fileName){
     initWaveForm(fileName);
 
     // 初始化文件信息
-    video = new videoInfo();
     initVideoInfo(fileName);
 
 
@@ -738,14 +680,26 @@ void MainWindow::normalPlay(){
         quitCurrentReversePlay();
     }
     isReverse=false;
-    showNormalWidget();
+
+
+    // 若是音频文件, 则显示封面
+    if(currMediaType==1){
+        QImage cover = getAttachedPic(currentVideoPath);
+        ui->reverse_widget->slotSetOneFrame(cover);
+        showReverseWidget();
+    }
+    else{
+        // 视频则播放
+        showNormalWidget();
+    }
+
     play();
 
     // 设置播放进度条最大值(秒数)
     qDebug()<<"MainWindow::normalPlay  "<<mediaPlayer->duration();
-    qDebug()<<"MainWindow::normalPlay s "<<video->duration;
-    qDebug()<<"MainWindow::normalPlay ms "<<video->durationMs;
-    ui->video_slider->setMaximum((int)video->durationMs);
+    qDebug()<<"MainWindow::normalPlay s "<<durationS;
+    qDebug()<<"MainWindow::normalPlay ms "<<durationMs;
+    ui->video_slider->setMaximum((int)durationMs);
 
     // 设置标记位
     if(!loadedVideo){
@@ -754,79 +708,7 @@ void MainWindow::normalPlay(){
 
 }
 
-void MainWindow::initVideo(QString filename, bool isPlay, bool reverse){
 
-    // 初始化当前文件路径, 视频信息, SeekFrame
-    currentVideoPath = filename;
-    std::string str = filename.toStdString();
-    const char* fileName = str.c_str();
-    video = new videoInfo();
-    // 初始化SeekFrame
-    deleteSeekFrame();
-    initSeekFrame(filename);
-
-    video = new videoInfo();
-    initVideoInfo(fileName);
-    mediaPlayer->setMedia(QMediaContent(QUrl::fromLocalFile(fileName)));
-
-    // 在播放列表中高亮(输入:currentVideoPath)
-    int numVideos = ui->playList->count();
-    if(numVideos!=0){
-        int currentVideoIndex = -1;
-        for(int i = 0;i<numVideos;i++){
-            QString i_address = ui->playList->item(i)->data(Qt::UserRole).toString();
-            if(currentVideoPath==i_address){
-                currentVideoIndex = i;
-                break;
-            }
-        }
-        if(currentVideoIndex!=-1){
-            ui->playList->item(currentVideoIndex)->setSelected(true);
-        }
-    }
-    /*下面判断到底要正放还是倒放*/
-    if(reverse){
-        //倒放
-        if(isPlay){
-            //开始播放
-            // 记录播放过的视频
-            playHistory->append(filename);
-
-        }
-        else{
-            // 暂时不播放
-        }
-    }
-    else{
-        //正放
-
-        if(isPlay){
-            //开始正放
-            quitCurrentReversePlay(); // 有问题???
-            isReverse=false;
-            showNormalWidget();
-
-            mediaPlayer->play();
-            play(); // 播放按钮和状态更新
-            // 记录播放过的视频
-            playHistory->append(filename);
-        }
-        else{
-            // 暂时不播放
-        }
-    }
-
-
-
-
-
-    // 设置标记位
-    if(!loadedVideo){
-        loadedVideo = true;
-    }
-
-
-}
 
 
 
@@ -914,46 +796,57 @@ void MainWindow::initWdigets(){
 
 
 }
+void MainWindow::reverseSkipForwardOrBackward(bool mode){
+    qint64 jumpPts = 10/av_q2d(reverseDecoder->format_ctx->streams[reverseDecoder->video_stream_index]->time_base);
+    qDebug()<<"jumpPts:"<<jumpPts;
+    if(mode){
+        // 向前跳秒
+        this->reverseSeek(ui->video_slider->value()+jumpPts);
+    }
+    else{
+        //向后跳秒
+        this->reverseSeek(ui->video_slider->value()-jumpPts);
+    }
+}
 
 void MainWindow::skipForwardOrBackward(bool mode)
 {
-    if(!loadedVideo){
-        qDebug()<<"skipForwardOrBackward:尚未加载视频";
-        return;
-    }
-    if(mode){
-        // 前进
-        int jumpSecond = 5;
-        if(currentPosition+jumpSecond*1000>=video->durationMs){
-            // 减10是为了不要跳到最后
-            mediaPlayer->setPosition(video->durationMs-10);
-            qDebug()<<"jump end";
-        }
-        else{
-            jump(jumpSecond);
-        }
+    if(isReverse){
+        reverseSkipForwardOrBackward(mode);
     }
     else{
-        // 后退
-        int jumpSecond = -5;
-        if(currentPosition+jumpSecond*1000<=0){
-            mediaPlayer->setPosition(10);
-            qDebug()<<"jump start";
+        // 正放
+        if(!loadedVideo){
+            qDebug()<<"skipForwardOrBackward:尚未加载视频";
+            return;
+        }
+        if(mode){
+            // 前进
+            int jumpSecond = 5;
+            if(currentPosition+jumpSecond*1000>=durationMs){
+                // 减10是为了不要跳到最后
+                mediaPlayer->setPosition(durationMs-10);
+                qDebug()<<"jump end";
+            }
+            else{
+                jump(jumpSecond);
+            }
         }
         else{
-            jump(jumpSecond);
-        }
+            // 后退
+            int jumpSecond = -5;
+            if(currentPosition+jumpSecond*1000<=0){
+                mediaPlayer->setPosition(10);
+                qDebug()<<"jump start";
+            }
+            else{
+                jump(jumpSecond);
+            }
 
+        }
     }
-//    int jumpSecond = 10;
-//    if(currentPosition+jumpSecond*1000>=video->durationMs){
-//        mediaPlayer->setPosition(video->durationMs);
-//        qDebug()<<"jump end";
-//    }
-//    else{
-//        qDebug()<<"jump 10";
-//        jump(10);
-//    }
+
+
 }
 void MainWindow::test1(bool input){
     qDebug()<<input;
@@ -1051,14 +944,7 @@ void MainWindow::changeVideo(bool nextOrPrevious){
     }
 }
 
-//void MainWindow::mousePressEvent(QMouseEvent *event) {
-//    m_nMouseClick_X_Coordinate = event->x();
-//    m_nMouseClick_Y_Coordinate = event->y();
-//}
 
-//void MainWindow::mouseMoveEvent(QMouseEvent *event) {
-//    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
-//}
 
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -1156,20 +1042,7 @@ ResizeRegion MainWindow::getResizeRegion(QPoint clientPos)
             return East;
     }
 }
-//void MainWindow::handleMove(QPoint pt)
-//{
-//    QPoint currentPos = pt - dragPos;
-//    if(currentPos.x()<desktop->x()) { //吸附于屏幕左侧
-//        currentPos.setX(desktop->x());
-//    }
-//    else if (currentPos.x()+this->width()>desktop->width()) { //吸附于屏幕右侧
-//        currentPos.setX(desktop->width()-this->width());
-//    }
-//    if(currentPos.y()<desktop->y()) { //吸附于屏幕顶部
-//        currentPos.setY(desktop->y());
-//    }
-//    move(currentPos);
-//}
+
 void MainWindow::handleResize()
 {
     int xdiff = QCursor::pos().x() - resizeDownPos.x();
@@ -1227,28 +1100,11 @@ void MainWindow::handleResize()
 }
 
 
-//void MainWindow::paintEvent(QPaintEvent *event)
-//{
-//    QPainter painter(this);
-//    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-//    painter.setBrush(QBrush(Qt::red));
-//    painter.setPen(Qt::transparent);
-//    QRect rect = this->rect();
-//    rect.setWidth(rect.width() - 1);
-//    rect.setHeight(rect.height() - 1);
-//    painter.drawRoundedRect(rect, 15, 15);
-//    //也可用QPainterPath 绘制代替 painter.drawRoundedRect(rect, 15, 15);
-//    {
-//        QPainterPath painterPath;
-//        painterPath.addRoundedRect(rect, 15, 15);
-//        painter.drawPath(painterPath);
-//    }
-//    QWidget::paintEvent(event);
-//}
+
 
 void MainWindow::reversePlay(QString fileName){
-    /*切换显示的组件从正方的widget到reverse_widget*/
-//    initVideo(fileName,false,true);
+
+    // 如果正在正放, 先暂停
     if(!isReverse)mediaPlayer->stop();
     currentVideoPath = fileName;
     highlightInFileList();// 在播放列表中高亮
@@ -1260,7 +1116,8 @@ void MainWindow::reversePlay(QString fileName){
         if(m_playerState==QMediaPlayer::StoppedState){
             qDebug()<<"当前在暂停";
             /*此时倒放在暂停,要先解锁*/
-            reverseDisplayer->resumeThread();
+//            reverseDisplayer->resumeThread();
+            reversePause();
         }
         // 如果当前正在倒放, 现在要转到下一个视频倒放, 则先清空线程
         qDebug()<<"reversePlay3";
@@ -1279,7 +1136,7 @@ void MainWindow::reversePlay(QString fileName){
     // 连接更新进度条的槽函数
     connect(reverseDisplayer, SIGNAL(SendTime(qint64)), this, SLOT(reverseShowRatio(qint64)));
     // 连接 更新当前秒数的槽函数
-    connect(reverseDisplayer, SIGNAL(SendSecond(qint64)), this, SLOT(recieveReverseSecond(qint64)));
+    connect(reverseDisplayer, SIGNAL(SendSecond(double)), this, SLOT(recieveReverseSecond(double)));
     res = reverseDecoder->loadFile(fileName);
     if(res==0){
         qDebug()<<"初始化成功";
@@ -1287,7 +1144,7 @@ void MainWindow::reversePlay(QString fileName){
 
     duration = reverseDecoder->duration; // 这个其实是最大的pts
     reverseDurationSecond = (qint64)duration*av_q2d(reverseDecoder->format_ctx->streams[reverseDecoder->video_stream_index]->time_base);
-    lastSecond = reverseDurationSecond;
+//    lastSecond = reverseDurationSecond;
     ui->video_slider->setMaximum(duration);  // 设置进度条的最大值
     mediaPlayer->stop(); // 停止正放
     reverseDecoder->start();
@@ -1300,6 +1157,12 @@ void MainWindow::reversePlay(QString fileName){
     ui->pause_botton->setVisible(true);
     // 设置渲染窗口
     showReverseWidget();
+    lastSecond = 1e10;
+
+
+
+
+
 
 }
 
@@ -1341,9 +1204,7 @@ void MainWindow::reverseShowRatio(qint64 pts){
     /*用于更新进度条*/
     ui->video_slider->setValue(int(pts));
 
-//    qDebug()<<"MainWindow::reverseShowRatio: reverseDurationSecond=>"<<reverseDurationSecond;
-//    qDebug()<<"MainWindow::reverseShowRatio: time=>"<<time;
-//    emit sig_reverseProgress(time);
+
 }
 
 void MainWindow::reversePause(){
@@ -1378,20 +1239,30 @@ void MainWindow::reverseSeek(qint64 seekPos){
 }
 
 
-void MainWindow::recieveReverseSecond(qint64 second){
+void MainWindow::recieveReverseSecond(double secondReceive){
+
+
+    if(secondReceive<0.3){
+        // 暂停
+        reversePause();
+    }
+    qint64 second = qint64(secondReceive);
+    //qDebug()<<"lastSecond"<<lastSecond<<"second "<<second;
+    if(second-lastSecond>1){
+        lastSecond = second;
+    }
     if(second<lastSecond){
         lastSecond = second;
         emit sig_reverseProgress(second);
     }
-//    qDebug()<<"MainWindow::recieveReverseSecond second="<<second;
-//    emit sig_reverseProgress(second);
+
+
 }
 
 
 void MainWindow::initSeekFrame(QString fileName){
     // 初始化seekFrame 类
     currVideoSeekFrame = new SeekFrame(fileName,1000,9999);
-    durationForSeekFrame_S = currVideoSeekFrame->formatContext->duration/1000000; // 秒(double)
 }
 
 void MainWindow::deleteSeekFrame(){

@@ -96,20 +96,21 @@ bool writePlayList(QVector<QString> playList,QString defaultPath){
 
 }
 
-<<<<<<< HEAD
+
 QImage getAttachedPic(QString fn){
     // 获取专辑封面
     std::string fn_str = fn.toStdString();
     const char* fileName = fn_str.c_str();
     AVFormatContext* formatContext = avformat_alloc_context();
+    QImage *notFoundImage = new QImage(":new/image/song.png");
     if(avformat_open_input(&formatContext,fileName,NULL,NULL)!=0){
         qDebug()<<"Couldn't open input stream.\n";
-        return "-1";
+        return *(notFoundImage);
     }
     //获取音频流信息
     if(avformat_find_stream_info(formatContext,NULL)<0){
         qDebug()<<"Could not find stream information\n";
-        return "-1";
+        return *(notFoundImage);
     }
     int streamsCount = formatContext->nb_streams;
     for (int i=0; i<streamsCount; ++i)
@@ -120,10 +121,10 @@ QImage getAttachedPic(QString fn){
             return QImage::fromData((uchar*)pkt.data, pkt.size);
         }
     }
+    avformat_free_context(formatContext);
+    return *(notFoundImage);
 }
-=======
 
->>>>>>> f12a0e527b292aeec47850270843761db3c424b9
 
 QString getVideoInfo(QString fn){
     QString info_return="";
@@ -193,10 +194,7 @@ QString getVideoInfo(QString fn){
     avformat_free_context(formatContext);
     delete tag;
     return info_return;
-<<<<<<< HEAD
-=======
 
->>>>>>> f12a0e527b292aeec47850270843761db3c424b9
 }
 
 QString getSuffix(QString fileName){

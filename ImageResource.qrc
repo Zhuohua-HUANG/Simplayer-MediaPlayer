@@ -42,5 +42,6 @@
         <file>image/info_off.png</file>
         <file>image/info_on.png</file>
         <file>image/volume_normal_focus.png</file>
+        <file>image/song.png</file>
     </qresource>
 </RCC>

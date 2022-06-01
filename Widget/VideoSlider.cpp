@@ -1,9 +1,4 @@
-﻿/**
- * 叶海辉
- * QQ群121376426
- * http://blog.yundiantech.com/
- */
-
+﻿
 #include "VideoSlider.h"
 
 #include <QDebug>

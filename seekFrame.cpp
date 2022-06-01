@@ -85,7 +85,6 @@ void SeekFrame::init(const char* fileName) {
 AVFrame* SeekFrame::getFrame(int wanted_time) {
     int response = 0;
     int howManypacketsToProcess = this->maxFindTimes;
-    int frameFinished = 0;
     AVFrame* frame = av_frame_alloc(); // 用于接收Frame
     AVPacket* packet = av_packet_alloc(); //用于接收packet
     AVFrame* pFrameRGB = av_frame_alloc(); // 用于存储把frame转换成了RGB之后的帧
@@ -157,14 +156,3 @@ AVFrame* SeekFrame::getFrame(int wanted_time) {
 }
 
 
-//QImage SeekFrame::getRGBimage(AVFrame *RGB_frame){
-//    //计算RGB图像所占字节大小
-//    int num_bytes = av_image_get_buffer_size(AV_PIX_FMT_RGB24, video_width, video_height, 1);
-//    //申请空间存放RGB图像数据
-//    uint8_t *out_buffer_rgb = (uint8_t *)av_malloc(num_bytes * sizeof(uint8_t));
-//    avpicture_fill((AVPicture *)RGB_frame, out_buffer_rgb, AV_PIX_FMT_RGB24,
-//        video_width, video_height);
-//    QImage image(out_buffer_rgb, video_width, video_height, QImage::Format_RGB888);
-//    return image;
-
-//}
