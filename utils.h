@@ -64,6 +64,7 @@ QString getFileName(QString Qpath);
 QVector<QString>* readPlayList(QString defaultPath="./playList.dat");
 bool writePlayList(QVector<QString> ,QString defaultPath="./playList.dat");
 QImage getAttachedPic(QString fn);
+//QImage* getAttachedPicPtr(QString fn);
 
 QString getVideoInfo(QString);
 QString getSuffix(QString fileName);

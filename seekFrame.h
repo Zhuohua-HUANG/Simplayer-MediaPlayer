@@ -3,6 +3,7 @@
 
 #include<iostream>
 #include<QImage>
+#include"utils.h"
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavutil/avutil.h>

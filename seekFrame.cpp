@@ -49,6 +49,10 @@ void SeekFrame::init(const char* fileName) {
     //利用已有decoder的信息;来分配一个AVCodecContext
     codecContext = avcodec_alloc_context3(codec);
     if (!codecContext) { std::cout << "Failed to allocate memory for AVCodecContext"; return ;}
+    int type = mediaType(fileName);
+    if(type==1){ //如果是音频, 下面的不用做了
+        return;
+    }
     if (avcodec_parameters_to_context(codecContext, codecParameters) < 0)
     {
         std::cout << "Failed to copy codec paramters to codec context";

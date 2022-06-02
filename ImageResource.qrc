@@ -43,5 +43,8 @@
         <file>image/info_on.png</file>
         <file>image/volume_normal_focus.png</file>
         <file>image/song.png</file>
+        <file>image/info.png</file>
+        <file>image/ok.png</file>
+        <file>image/player.png</file>
     </qresource>
 </RCC>

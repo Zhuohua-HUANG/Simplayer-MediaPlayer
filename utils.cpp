@@ -126,6 +126,37 @@ QImage getAttachedPic(QString fn){
 }
 
 
+//QImage* getAttachedPicPtr(QString fn){
+//    // 获取专辑封面
+//    std::string fn_str = fn.toStdString();
+//    const char* fileName = fn_str.c_str();
+//    AVFormatContext* formatContext = avformat_alloc_context();
+//    QImage *notFoundImage = new QImage(":new/image/song.png");
+//    if(avformat_open_input(&formatContext,fileName,NULL,NULL)!=0){
+//        qDebug()<<"Couldn't open input stream.\n";
+//        return notFoundImage;
+//    }
+//    //获取音频流信息
+//    if(avformat_find_stream_info(formatContext,NULL)<0){
+//        qDebug()<<"Could not find stream information\n";
+//        return notFoundImage;
+//    }
+//    int streamsCount = formatContext->nb_streams;
+//    for (int i=0; i<streamsCount; ++i)
+//    {
+//        if (formatContext->streams[i]->disposition & AV_DISPOSITION_ATTACHED_PIC)
+//        {
+//            AVPacket pkt = formatContext->streams[i]->attached_pic;
+//            QImage res = QImage::fromData((uchar*)pkt.data, pkt.size);
+//            QImage *res2 = &res;
+//            return res2;
+//        }
+//    }
+//    avformat_free_context(formatContext);
+//    return notFoundImage;
+//}
+
+
 QString getVideoInfo(QString fn){
     QString info_return="";
     std::string fn_str = fn.toStdString();

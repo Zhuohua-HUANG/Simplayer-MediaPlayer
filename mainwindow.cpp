@@ -77,28 +77,50 @@ void MainWindow::showScreenCap(double ratio){
         int x=this->mapFromGlobal(QCursor().pos()).x();
         // screencap固定高度, 宽度按照比例缩放
         int img_height = 100;
-        int img_width = img_height*currVideoSeekFrame->codecContext->width/
-                currVideoSeekFrame->codecContext->height; // 按照比例得到宽度
-        // 处理缩略图位置越界的情况
-        if(x+img_width>=this->width()){
-            x-=img_width;
-        }
 
 
-        pAudioImage->resizeGL(img_width,audioImageHeight);
-        long data_time=currAudioGetFrame->loadAudio(time);
-        pAudioImage->set_startdata(data_time);
-
-        frameLabel->setGeometry(x,this->ui->widget_controller->pos().y()-img_height-10,img_width,img_height);
-        pAudioImage->setGeometry(x,this->ui->widget_controller->pos().y()-img_height-10-audioImageHeight,img_width,audioImageHeight);  // 波形图的显示
-
-
-
-        pAudioImage->paintGL();
+//        int img_width = img_height*currVideoSeekFrame->codecContext->width/
+//                currVideoSeekFrame->codecContext->height; // 按照比例得到宽度
+//        // 处理缩略图位置越界的情况
+//        if(x+img_width>=this->width()){
+//            x-=img_width;
+//        }
 
 
+//        pAudioImage->resizeGL(img_width,audioImageHeight);
+//        long data_time=currAudioGetFrame->loadAudio(time);
+//        pAudioImage->set_startdata(data_time);
+
+//        frameLabel->setGeometry(x,this->ui->widget_controller->pos().y()-img_height-10,img_width,img_height);
+//        pAudioImage->setGeometry(x,this->ui->widget_controller->pos().y()-img_height-10-audioImageHeight,img_width,audioImageHeight);  // 波形图的显示
+
+
+
+//        pAudioImage->paintGL();
+
+        int img_width;
         // 得到当前时间的frame
         if(currMediaType==2){
+
+            img_width = img_height*currVideoSeekFrame->codecContext->width/
+                    currVideoSeekFrame->codecContext->height; // 按照比例得到宽度
+            // 处理缩略图位置越界的情况
+            if(x+img_width>=this->width()){
+                x-=img_width;
+            }
+
+
+            pAudioImage->resizeGL(img_width,audioImageHeight);
+            long data_time=currAudioGetFrame->loadAudio(time);
+            pAudioImage->set_startdata(data_time);
+
+            frameLabel->setGeometry(x,this->ui->widget_controller->pos().y()-img_height-10,img_width,img_height);
+            pAudioImage->setGeometry(x,this->ui->widget_controller->pos().y()-img_height-10-audioImageHeight,img_width,audioImageHeight);  // 波形图的显示
+
+
+
+            pAudioImage->paintGL();
+
             // 是视频才有缩略图
             AVFrame* pFrameRGB = currVideoSeekFrame->getFrame(time);
             // 将frame转化为 QImage对象
@@ -112,6 +134,11 @@ void MainWindow::showScreenCap(double ratio){
             av_frame_free(&pFrameRGB);
         }
         else{
+            img_width=100;
+            pAudioImage->resizeGL(img_width,audioImageHeight);
+            long data_time=currAudioGetFrame->loadAudio(time);
+            pAudioImage->set_startdata(data_time);
+
             frameLabel->setVisible(false);
             pAudioImage->setGeometry(x,this->ui->widget_controller->pos().y()-10-audioImageHeight,img_width,audioImageHeight);
             pAudioImage->paintGL();
@@ -262,7 +289,7 @@ void MainWindow::connect2Player(){
     connect(ui->next_video,&QPushButton::clicked,this,[=](){ changeVideo(true); });
     connect(ui->previous_video,&QPushButton::clicked,this,[=](){ changeVideo(false); });
     connect(ui->video_slider,&VideoSlider::sig_pressed,this,[=](){
-        if(isReverse){
+        if(isReverse&&loadedVideo){
             reverseSeek(qint64(ui->video_slider->value()));
         }
     });
@@ -371,8 +398,11 @@ void MainWindow::initVideoInfo(QString fileName){
 
 
 void MainWindow::seek(qint64 time){
-    /*正放的时候跳转到某个位置*/
-    mediaPlayer->setPosition(time);
+    if(loadedVideo){
+        /*正放的时候跳转到某个位置*/
+        mediaPlayer->setPosition(time);
+    }
+
 }
 void MainWindow::changeVolume(int volume){
     mediaPlayer->setVolume(volume);
@@ -530,7 +560,7 @@ void MainWindow::addVideoItem(QString fileName){
             "border-radius: 15px;"
         "}"
                   "  QPushButton{ "
-                "    image: url(C:/Users/24508/Downloads/ok.png);"
+                "    image: url(:new/image/ok.png);"
                "     border-radius:0px; "
               "      padding:1px;"
               "      }  "
@@ -539,7 +569,7 @@ void MainWindow::addVideoItem(QString fileName){
         msgBox.button(QMessageBox::Ok)->setText("");
         msgBox.button(QMessageBox::Ok)->setMinimumSize(QSize(25, 25));
         msgBox.setIcon(QMessageBox::NoIcon);
-        QIcon * windowIcon = new QIcon("C:/Users/24508/Downloads/info.png");
+        QIcon * windowIcon = new QIcon(":new/image/info.png");
         msgBox.setWindowIcon(*windowIcon);
         msgBox.setWindowTitle("视媒体信息");
         msgBox.setText(info);
@@ -610,8 +640,10 @@ void MainWindow::initializeVideo(QString fileName){
 
     // 若是音频文件, 则显示封面
     if(currMediaType==1){
-        QImage cover = getAttachedPic(fileName);
-        ui->reverse_widget->slotSetOneFrame(cover);
+//        QImage cover = getAttachedPic(fileName);
+        QImage *notFoundImage = new QImage(":new/image/song.png");
+        ui->reverse_widget->slotSetOneFrame(*notFoundImage);
+//        ui->reverse_widget->slotSetOneFrame(cover);
     }
 
 
@@ -684,9 +716,13 @@ void MainWindow::normalPlay(){
 
     // 若是音频文件, 则显示封面
     if(currMediaType==1){
+        showReverseWidget();
         QImage cover = getAttachedPic(currentVideoPath);
         ui->reverse_widget->slotSetOneFrame(cover);
-        showReverseWidget();
+        QImage *notFoundImage = new QImage(":new/image/song.png");
+
+        ui->reverse_widget->slotSetOneFrame(*notFoundImage);
+
     }
     else{
         // 视频则播放
@@ -770,6 +806,9 @@ void MainWindow::changePlayingRatio(float rt){
 
 void MainWindow::initWdigets(){
     /*此函数用于初始化组件*/
+    // 设置图标
+    QIcon * windowIcon = new QIcon(":new/image/player.png");
+    this->setWindowIcon(*windowIcon);
 
     // 初始化播放按钮
     ui->pause_botton->setVisible(false); // 暂停按钮初始为不可见
