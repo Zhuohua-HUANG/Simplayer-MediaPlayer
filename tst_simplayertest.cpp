@@ -23,6 +23,7 @@ private slots:
     void test_case2();
     void test_case3();
     void test_case4();
+    void test_case5();
 
 private:
     GetAudio* currAudioGetFrame;
@@ -110,6 +111,51 @@ void SimplayerTest::test_case4()
 {
     // test get info
     QVERIFY((reverseDecoder->loadFile(fileName))==0);
+}
+
+void SimplayerTest::test_case5(){
+    //utils test
+
+    //valid file name test
+    QVERIFY((isValidVideoFile("3d.mp3"))==true);
+    QVERIFY((isValidVideoFile("3d.avi"))==true);
+    QVERIFY((isValidVideoFile("3d.wmv"))==true);
+    QVERIFY((isValidVideoFile("3d.mpg"))==true);
+    QVERIFY((isValidVideoFile("3d.mpeg"))==true);
+    QVERIFY((isValidVideoFile("3d.mov"))==true);
+    QVERIFY((isValidVideoFile("3d.rm"))==true);
+    QVERIFY((isValidVideoFile("avi.txt.avi"))==true);
+
+    QVERIFY((isValidVideoFile("3d.md"))==false);
+    QVERIFY((isValidVideoFile("3d.txt"))==false);
+    QVERIFY((isValidVideoFile("3d.avi.md"))==false);
+
+    //filename
+    QVERIFY((getFileName("C:/abusrd/sdf/abc.mp3"))=="abc.mp3");
+    QVERIFY((getFileName("C:\\abusrd\\sdf\\abc.mp3"))=="abc.mp3");
+
+    // playlist
+    QVector<QString>* playList=readPlayList("C:/Users/hzh30/Desktop/my_new/master/Simplayer/SimplayerTest/playList.dat");
+    QVERIFY((playList[0][0])=="C:/Users/24508/Videos/Serrini - 油尖旺金毛玲.mp3");
+    QVERIFY((playList[0][3])=="D:/Video/up.mp4");
+
+    //attached pic
+    QVERIFY(getAttachedPic("D:/Video/MONEY-LISA.mp3").size().width()==1620);
+    QVERIFY(getAttachedPic("D:/Video/MONEY-LISA.mp3").size().height()==1028);
+
+    // get suffix
+    QVERIFY(getSuffix("MONEY-LISA.mp3")=="mp3");
+    QVERIFY(getSuffix("2341.txt")=="txt");
+
+    // mediaType test
+    QVERIFY(mediaType("MONEY-LISA.mp3")==1);
+    QVERIFY(mediaType("MONEY-LISA.wav")==1);
+    QVERIFY((mediaType("3d.wmv"))==2);
+    QVERIFY((mediaType("avi.txt.avi"))==2);
+    QVERIFY((mediaType("3d.mp4"))==2);
+    QVERIFY((mediaType("avi.txt.mkv"))==2);
+    QVERIFY(mediaType("2341.txt")==0);
+    QVERIFY(mediaType("2341.md")==0);
 }
 
 QTEST_MAIN(SimplayerTest)
