@@ -34,7 +34,6 @@ MainWindow::MainWindow(QWidget *parent)
     playList = new QMediaPlaylist();
     mediaPlayer->setPlaylist(playList);
     initWdigets();
-    connect2Player();
     createExtraWidget();
 
 
