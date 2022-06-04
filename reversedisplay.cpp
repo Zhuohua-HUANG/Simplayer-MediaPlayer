@@ -4,7 +4,6 @@ ReverseDisplay::ReverseDisplay(Controller *ctrl,VideoFrameDisplay *videoDisplaye
 {
     this->ctrl = ctrl;
     this->videoDisplayer = videoDisplayer;
-    stop_=false;
     pause_=false;
 }
 
