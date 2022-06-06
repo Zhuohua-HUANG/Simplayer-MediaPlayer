@@ -1,3 +1,6 @@
+
+![demo](https://user-images.githubusercontent.com/78400045/172119035-a30b5d08-d148-45b4-af80-3e9b558c3d26.jpg)
+
 # Simplayer
 
 Simplayer, combined with 'simple' and 'player', is a simple but strong media player. This player uses ffmpeg, OpenGL, and MultiMedia. It was made by Zhuohua Huang and Tianyin Wang.
@@ -28,7 +31,5 @@ Simplayer, combined with 'simple' and 'player', is a simple but strong media pla
 * Audio waveform diagram: If it is an audio file without picture output, the dynamic display of the audio spectrogram can be performed and the playback progress of the audio can be kept consistent;
 
 
-
-![demo](https://user-images.githubusercontent.com/78400045/172119035-a30b5d08-d148-45b4-af80-3e9b558c3d26.jpg)
 
 
