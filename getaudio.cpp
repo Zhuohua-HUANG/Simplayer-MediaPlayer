@@ -5,6 +5,12 @@ GetAudio::GetAudio(QString fileName)
 {
     init(fileName);
 }
+
+/**
+ * @brief 初始化波形图对象
+ * @param fileName 文件名
+ * @return 无
+ */
 void GetAudio::init(QString fileName) {
     std::string fn_str = fileName.toStdString();
     const char* fn = fn_str.c_str();
@@ -152,6 +158,11 @@ void GetAudio::init(QString fileName) {
     swrContext = NULL;
 }
 
+/**
+ * @brief 加载某个特定时间的波形图
+ * @param want_t 需要的波形图的时间
+ * @return 寻找数据地址
+ */
 long GetAudio::loadAudio(int want_t) {
     long  base_data = long((total_len/duration)*want_t);
     long start_data=0;

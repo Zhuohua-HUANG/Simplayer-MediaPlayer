@@ -26,6 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Widget/VideoFrameDisplay.cpp \
     Widget/VideoSlider.cpp \
+    Widget/videowidget.cpp \
     audioimage.cpp \
     getaudio.cpp \
     main.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
 HEADERS += \
     Widget/VideoFrameDisplay.h \
     Widget/VideoSlider.h \
+    Widget/videowidget.h \
     audioimage.h \
     getaudio.h \
     mainwindow.h \

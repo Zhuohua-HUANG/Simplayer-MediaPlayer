@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     playList = new QMediaPlaylist();
     mediaPlayer->setPlaylist(playList);
     initWdigets();
+    connect2Player();
     createExtraWidget();
 
 
@@ -223,7 +224,9 @@ void MainWindow::playClicked(){
     qDebug()<<"'after satate:"<<m_playerState;
 }
 
+
 void MainWindow::connect2Player(){
+
     // 缩略图
     connect(ui->video_slider,SIGNAL(sig_moveValueChanged(double)),this,SLOT(showScreenCap(double)));
     //关闭, 最大化, 最小化
@@ -259,10 +262,10 @@ void MainWindow::connect2Player(){
     connect(ui->play_button,SIGNAL(clicked()),this,SLOT(playClicked()));
     connect(ui->pause_botton,SIGNAL(clicked()),this,SLOT(playClicked()));
     connect(mediaPlayer,SIGNAL(positionChanged(qint64)),this,SLOT(positionChange(qint64)));
-//    connect(ui->video_slider,SIGNAL(sig_valueChanged(double)),this,SLOT(seek(double)));
     connect(ui->video_slider,SIGNAL(sig_valueChanged_v(qint64)),this,SLOT(seek(qint64)));
     connect(ui->volume_slider,SIGNAL(valueChanged(int)),SLOT(changeVolume(int)));
     connect(ui->volume_button,SIGNAL(clicked()),this,SLOT(changeMute()));
+    connect(ui->repeat,SIGNAL(clicked()),this,SLOT(changePlayOrder()));
     connect(ui->addFile,SIGNAL(clicked()),this,SLOT(openFileButtonClicked()));
     connect(playList, &QMediaPlaylist::currentIndexChanged, this, &MainWindow::playlistPositionChanged);
     // demo:
@@ -379,10 +382,15 @@ void MainWindow::updateDurationInfo(qint64 currentInfo){
     }
     qDebug()<<"m_labelDuration"<<tStr;
     ui->current_time->setText(tStr);
-    // 若放完了, 则跳转到开头, 并暂停
+    // 顺序播放/循环播放
     if(currentInfo==(qint64)durationS){
-        mediaPlayer->setPosition(10);
-        pause();
+        if(isRepeat){
+            initializeVideo(currentVideoPath);
+            normalPlay();
+        }
+        else{
+            changeVideo(true); // 下一个视频
+        }
     }
 }
 
@@ -436,12 +444,15 @@ void MainWindow::addVideoItem(QString fileName){
     horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
     QLabel *label = new QLabel(widget_3);
     label->setText(shortFilename);
-    label->setStyleSheet("color: rgb(246,246,246);");
+    label->setStyleSheet("color: rgb(246,246,246);"
+                         "font-family:'Microsoft YaHei';"
+                         "font:10pt;");
+
     label->setObjectName(QString::fromUtf8("label"));
-    QFont font;
-    font.setFamily(QString::fromUtf8("Arial"));
-    font.setPointSize(12);
-    label->setFont(font);
+//    QFont font;
+//    font.setFamily(QString::fromUtf8("Arial"));
+//    font.setPointSize(12);
+//    label->setFont(font);
 
     QPushButton *pushButton_3 = new QPushButton(widget_3);
     pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
@@ -604,12 +615,28 @@ void MainWindow::openFileButtonClicked(){
                                            );
             return;
         }
+        // 判断在不在当前的list中
+        bool inList = false;
+        int numVideos = ui->playList->count();
+        for(int i = 0;i<numVideos;i++){
+            QString i_address = ui->playList->item(i)->data(Qt::UserRole).toString();
+            if(filename==i_address){
+                QMessageBox::information(this, tr("info"),
+                                               tr("打开的文件已在播放列表")
+                                               );
+                inList = true;
+                break;
+            }
+        }
 
 
 
         if(!isReverse)mediaPlayer->pause();
-        addVideoItem(filename);
-        playListLocal->append(filename); // 把文件名写入到本地
+        if(!inList){
+            addVideoItem(filename);
+            playListLocal->append(filename); // 把文件名写入到本地
+        }
+
 //        initVideo(filename,true,false);
         qDebug()<<"openFileButtonClicked1"<<isReverse;
         initializeVideo(filename);
@@ -1181,8 +1208,12 @@ void MainWindow::reversePlay(QString fileName){
     }else{qDebug()<<"初始化失败";}
 
     duration = reverseDecoder->duration; // 这个其实是最大的pts
-    reverseDurationSecond = (qint64)duration*av_q2d(reverseDecoder->format_ctx->streams[reverseDecoder->video_stream_index]->time_base);
-//    lastSecond = reverseDurationSecond;
+
+    // 获取reverseDurationSecond
+    double rt = av_q2d(reverseDecoder->format_ctx->streams[reverseDecoder->video_stream_index]->time_base);
+    double reverseDurationSecond_double = ((double)duration)*rt;
+    reverseDurationSecond = (qint64)reverseDurationSecond_double;
+    //
     ui->video_slider->setMaximum(duration);  // 设置进度条的最大值
     mediaPlayer->stop(); // 停止正放
     reverseDecoder->start();
@@ -1281,8 +1312,14 @@ void MainWindow::recieveReverseSecond(double secondReceive){
 
 
     if(secondReceive<0.3){
-        // 暂停
-        reversePause();
+//
+        if(isRepeat){
+            reverseSeek(qint64(ui->video_slider->maximum()));
+        }
+        else{
+            // 暂停
+            reversePause();
+        }
     }
     qint64 second = qint64(secondReceive);
     //qDebug()<<"lastSecond"<<lastSecond<<"second "<<second;
@@ -1323,3 +1360,23 @@ void MainWindow::deleteWaveForm(){
     }
 }
 
+void MainWindow::changePlayOrder(){
+    if(isRepeat){
+        ui->repeat->setStyleSheet(
+                   " QPushButton{ "
+                   " image: url(:new/image/inorder.png);"
+                   " border-radius:0px; "
+                   " } "
+                    );
+        isRepeat=false;
+    }
+    else{
+        ui->repeat->setStyleSheet(
+                   " QPushButton{ "
+                   " image: url(:new/image/repeat.png);"
+                   " border-radius:0px; "
+                   " } "
+                    );
+        isRepeat = true;
+    }
+}

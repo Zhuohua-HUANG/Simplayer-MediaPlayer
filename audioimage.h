@@ -12,6 +12,8 @@
 # include<QOpenGLWidget>
 # include<QOpenGLFunctions>
 
+
+
 class AudioImage : public QOpenGLWidget,protected QOpenGLFunctions
 {
     Q_OBJECT

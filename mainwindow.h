@@ -99,6 +99,7 @@ public:
     // 当前视频的类型
     int currMediaType;
     // 当前的播放状态
+    bool isRepeat=false;
     QMediaPlayer::State m_playerState = QMediaPlayer::StoppedState;
 
 /*无边框相关*/
@@ -118,6 +119,7 @@ public slots:
     void highlightInFileList(); // 高亮播放列表中的某个视频
     void showNormalWidget();
     void showReverseWidget();
+    void changePlayOrder(); // 播放顺序
 
     /*波形图相关*/
     void initWaveForm(QString); //初始化currAudioFrame类

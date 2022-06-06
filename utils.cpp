@@ -24,6 +24,13 @@ void Controller::print(){
     qDebug()<<"----------------";
 }
 
+/**
+ * @brief 判断一个文件是不是合法的视频文件
+ * @param filename  文件路径
+ *
+ * @return true：如果是合法的视频文件；false如果不是
+ *
+ */
 bool isValidVideoFile(QString filename){
     filename = filename.toLower();
     int lastindex = filename.lastIndexOf(".");
@@ -39,7 +46,12 @@ bool isValidVideoFile(QString filename){
     return false;
 }
 
-//获取文件的名称
+
+/**
+ * @brief 获取文件的名称
+ * @param Qpath  文件路径
+ * @return 返回其带后缀的文件名
+ */
 QString getFileName(QString Qpath)
 {
     std::string path = Qpath.toStdString();
@@ -58,7 +70,22 @@ QString getFileName(QString Qpath)
     return res;
 }
 
+bool isFileExist(QString fullFileName)
+{
+    QFileInfo fileInfo(fullFileName);
+    if(fileInfo.isFile())
+    {
+        return true;
+    }
+    return false;
+}
 
+
+/**
+ * @brief 读取本地的.dat文件，读取里面的播放列表
+ * @param defaultPath  文件路径
+ * @return QVector<QString>类型的列表
+ */
 QVector<QString>* readPlayList(QString defaultPath){
     QFile file(defaultPath);
     QVector<QString> *playList = new QVector<QString>;
@@ -69,7 +96,7 @@ QVector<QString>* readPlayList(QString defaultPath){
     while (!input.atEnd()){
         QString buf;
         input>>buf;
-        playList->append(buf);
+        if(isFileExist(buf))playList->append(buf);
      }
 
     file.close();
@@ -78,7 +105,12 @@ QVector<QString>* readPlayList(QString defaultPath){
 
 }
 
-
+/**
+ * @brief 将播放列表写入到本地的.dat文件
+ * @param playList  播放列表
+ * @param defaultPath  写入的本地路径
+ * @return true如果操作成功；否则false
+ */
 bool writePlayList(QVector<QString> playList,QString defaultPath){
     QFile file(defaultPath);
     if(file.open(QIODevice::WriteOnly| QIODevice::Truncate))
@@ -96,7 +128,11 @@ bool writePlayList(QVector<QString> playList,QString defaultPath){
 
 }
 
-
+/**
+ * @brief 获取MP3文件的专辑封面
+ * @param fn  文件路径
+ * @return 专辑封面QImage
+ */
 QImage getAttachedPic(QString fn){
     // 获取专辑封面
     std::string fn_str = fn.toStdString();
@@ -126,37 +162,12 @@ QImage getAttachedPic(QString fn){
 }
 
 
-//QImage* getAttachedPicPtr(QString fn){
-//    // 获取专辑封面
-//    std::string fn_str = fn.toStdString();
-//    const char* fileName = fn_str.c_str();
-//    AVFormatContext* formatContext = avformat_alloc_context();
-//    QImage *notFoundImage = new QImage(":new/image/song.png");
-//    if(avformat_open_input(&formatContext,fileName,NULL,NULL)!=0){
-//        qDebug()<<"Couldn't open input stream.\n";
-//        return notFoundImage;
-//    }
-//    //获取音频流信息
-//    if(avformat_find_stream_info(formatContext,NULL)<0){
-//        qDebug()<<"Could not find stream information\n";
-//        return notFoundImage;
-//    }
-//    int streamsCount = formatContext->nb_streams;
-//    for (int i=0; i<streamsCount; ++i)
-//    {
-//        if (formatContext->streams[i]->disposition & AV_DISPOSITION_ATTACHED_PIC)
-//        {
-//            AVPacket pkt = formatContext->streams[i]->attached_pic;
-//            QImage res = QImage::fromData((uchar*)pkt.data, pkt.size);
-//            QImage *res2 = &res;
-//            return res2;
-//        }
-//    }
-//    avformat_free_context(formatContext);
-//    return notFoundImage;
-//}
 
-
+/**
+ * @brief 获取音视频文件的详细信息
+ * @param fn  文件路径
+ * @return QString类型的音视频信息
+ */
 QString getVideoInfo(QString fn){
     QString info_return="";
     std::string fn_str = fn.toStdString();
@@ -228,6 +239,12 @@ QString getVideoInfo(QString fn){
 
 }
 
+
+/**
+ * @brief 获取文件的后缀
+ * @param fileName  文件路径
+ * @return 文件的后缀
+ */
 QString getSuffix(QString fileName){
     std::string filename_str = fileName.toStdString();
     std::string res=filename_str.substr(filename_str.find_last_of('.') + 1);
@@ -235,6 +252,12 @@ QString getSuffix(QString fileName){
     return suffix;
 }
 
+
+/**
+ * @brief 获取文件的类型
+ * @param fileName  文件路径
+ * @return 1：表示是音频文件；2表示是视频文件；3表示是不合法文件
+ */
 int mediaType(QString fileName){
     QString suffix = getSuffix(fileName);
 

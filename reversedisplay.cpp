@@ -7,6 +7,12 @@ ReverseDisplay::ReverseDisplay(Controller *ctrl,VideoFrameDisplay *videoDisplaye
     pause_=false;
 }
 
+
+/**
+ * @brief 重写QThread的run函数
+ * @param 无
+ * @return 无
+ */
 void ReverseDisplay::run(){
     while (1) {
         ctrl->quitMutex.lock();
@@ -72,11 +78,23 @@ void ReverseDisplay::run(){
     }
     qDebug()<<"DISPLAYER:  退出大循环";
 }
+
+/**
+ * @brief 使用锁暂停渲染线程
+ * @param 无
+ * @return 无
+ */
 void ReverseDisplay::pauseThread(){
     pauseLock.lock();
     pause_=true;
 }
 
+
+/**
+ * @brief 使用锁恢复暂停了的渲染线程
+ * @param 无
+ * @return 无
+ */
 void ReverseDisplay::resumeThread(){
     pauseLock.unlock();
     pause_=false;

@@ -14,6 +14,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <QLabel>
+#include <QFileInfo>
 extern "C"
 {
 #include "libavcodec/avcodec.h"
@@ -34,7 +35,6 @@ struct IMAGE_FRAME
     double video_clock;
     int64_t pts;
     AVRational frameRate;
-
 };
 static QVector<QString> audioType = {"mp3","wav"};
 static QVector<QString> videoType = {"mp4","wmv","mkv","avi"};
@@ -46,7 +46,7 @@ public:
     bool isDecoderSeek = false;
     bool isDisplayerSeek = false;
     bool isQuit = false;
-    qint64 seekPos;
+    qint64 seekPos;  // 需要seek(跳转)的位置
     mutex seekMutex; // 用于保护isDecoderSeek,isDisplayerSeek 以及seekPos
     mutex Q_mutex;  // 用于保护队列
     mutex quitMutex; // 用于保护isQuit
@@ -68,6 +68,6 @@ QImage getAttachedPic(QString fn);
 
 QString getVideoInfo(QString);
 QString getSuffix(QString fileName);
-
+bool isFileExist(QString fullFileName);
 int mediaType(QString fileName);
 #endif // UTILS_H

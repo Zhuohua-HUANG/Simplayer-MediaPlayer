@@ -25,6 +25,7 @@ public:
 
    // QLabel *time_lable;
     bool m_pause_state=false;
+    bool isFullScreen = false;
     qint64 m_play_time=0;
     qint64 m_start_time=0; //开始的时间
     qint64 m_pos_time=0;

@@ -162,7 +162,7 @@ border-radius:0px;
        <number>0</number>
       </property>
       <item>
-       <widget class="QVideoWidget" name="normal_widget" native="true"/>
+       <widget class="VideoWidget" name="normal_widget" native="true"/>
       </item>
       <item>
        <widget class="VideoFrameDisplay" name="reverse_widget" native="true"/>
@@ -565,6 +565,22 @@ border-radius:0px;
             </widget>
            </item>
            <item>
+            <spacer name="horizontalSpacer_32">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>6</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
             <spacer name="horizontalSpacer_2">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
@@ -860,6 +876,51 @@ border-radius: 4px;
             </widget>
            </item>
            <item>
+            <spacer name="horizontalSpacer_31">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>6</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="repeat">
+             <property name="minimumSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton{ 
+image: url(:new/image/inorder.png);
+border-radius:0px; 
+} 
+</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
             <spacer name="horizontalSpacer_27">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
@@ -984,9 +1045,9 @@ border-radius:0px;
    <header>Widget/VideoSlider.h</header>
   </customwidget>
   <customwidget>
-   <class>QVideoWidget</class>
+   <class>VideoWidget</class>
    <extends>QWidget</extends>
-   <header location="global">qvideowidget.h</header>
+   <header location="global">Widget/videowidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

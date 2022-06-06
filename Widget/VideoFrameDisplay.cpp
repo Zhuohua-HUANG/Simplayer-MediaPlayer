@@ -72,6 +72,17 @@ QImage VideoFrameDisplay::GetImage()
 
 void VideoFrameDisplay::mouseDoubleClickEvent(QMouseEvent *e)
 {
+    if(isFullScreen){
+        setWindowFlags(Qt::Widget);
+        showNormal();
+        isFullScreen = false;
+    }
+    else{
+        setWindowFlags(Qt::Window);
+        showFullScreen();
+        isFullScreen = true;
+    }
+
     emit s_VideoWidgetEvent(1);
 }
 
