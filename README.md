@@ -26,3 +26,8 @@ Simplayer, combined with 'simple' and 'player', is a simple but strong media pla
 * Progress fine-tuning (fast forward, fast rewind): Click the fast forward or fast rewind key to fast forward (rewind) 1s forward or backward, in addition, it can be achieved through shortcuts;
 
 * Audio waveform diagram: If it is an audio file without picture output, the dynamic display of the audio spectrogram can be performed and the playback progress of the audio can be kept consistent;
+
+
+![show](https://user-images.githubusercontent.com/78400045/172118846-c88ec3b3-ae40-4cf6-8361-2e9e89ba079a.jpg)
+
+
