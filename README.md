@@ -28,6 +28,7 @@ Simplayer, combined with 'simple' and 'player', is a simple but strong media pla
 * Audio waveform diagram: If it is an audio file without picture output, the dynamic display of the audio spectrogram can be performed and the playback progress of the audio can be kept consistent;
 
 
-![show](https://user-images.githubusercontent.com/78400045/172118846-c88ec3b3-ae40-4cf6-8361-2e9e89ba079a.jpg)
+
+![demo](https://user-images.githubusercontent.com/78400045/172119035-a30b5d08-d148-45b4-af80-3e9b558c3d26.jpg)
 
 
