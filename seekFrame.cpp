@@ -7,6 +7,11 @@ SeekFrame::SeekFrame(QString fileName, int maxFindTimes, double minDistance)
     this->maxFindTimes = maxFindTimes;
     this->minDistance = minDistance;
 }
+
+/**
+ * @brief 初始化SeekFrame类
+ * @param fileName    视频文件路径
+ */
 void SeekFrame::init(const char* fileName) {
     formatContext = avformat_alloc_context();
     AVCodec* codec = NULL;  // 视频流的decoder
@@ -85,7 +90,11 @@ void SeekFrame::init(const char* fileName) {
 
 
 }
-
+/**
+ * @brief  获取视频某个时刻的帧
+ * @param wanted_time 需要获取的帧的时间
+ * @return 帧（AVFrame*）
+ */
 AVFrame* SeekFrame::getFrame(int wanted_time) {
     int response = 0;
     int howManypacketsToProcess = this->maxFindTimes;

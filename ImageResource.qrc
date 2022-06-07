@@ -46,5 +46,7 @@
         <file>image/info.png</file>
         <file>image/ok.png</file>
         <file>image/player.png</file>
+        <file>image/inorder.png</file>
+        <file>image/repeat.png</file>
     </qresource>
 </RCC>

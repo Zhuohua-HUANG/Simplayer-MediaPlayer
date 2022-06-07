@@ -5,6 +5,12 @@ ReverseDecode::ReverseDecode(Controller *ctrl)
     this->ctrl = ctrl;
 }
 
+
+/**
+ * @brief 加载需要倒放的视频
+ * @param fileName： 文件路径
+ * @return 0如果成功；否则1
+ */
 int ReverseDecode::loadFile(QString fileName){
     qDebug()<<"Init filename:"<<fileName;
     reInitialize(); // 重新初始化
@@ -63,6 +69,12 @@ int ReverseDecode::loadFile(QString fileName){
 }
 
 
+
+/**
+ * @brief 重载QThread的run函数，函数内是个死循环
+ * @param 无
+ * @return 无
+ */
 void ReverseDecode::run(){
     int i = 1;
     while (true) {
@@ -210,11 +222,11 @@ void ReverseDecode::run(){
 }
 
 
-void ReverseDecode::seek(qint64 pos){
-
-}
-
-
+/**
+ * @brief 重新初始化倒放的类
+ * @param 无
+ * @return 无
+ */
 void ReverseDecode::reInitialize(){
     format_ctx = nullptr;
     video_stream_index = -1;
@@ -226,7 +238,6 @@ void ReverseDecode::reInitialize(){
     video_width = 0;
     video_height = 0;
     deltaPts=-1; // 两个pts 之间的差值(正数)
-    endProcessed = true;
 
 
 }

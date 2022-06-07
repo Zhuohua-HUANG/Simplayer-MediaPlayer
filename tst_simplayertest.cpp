@@ -80,7 +80,8 @@ void SimplayerTest::test_case1()
     QVERIFY((currAudioGetFrame->loadAudio(200))==35380400);
     QVERIFY((currAudioGetFrame->loadAudio(0))==0);
     for( int i=0;i<currAudioGetFrame->duration;i+=10){
-       QVERIFY((currAudioGetFrame->loadAudio(i))<=currAudioGetFrame->total_len && (currAudioGetFrame->loadAudio(i))>=0 );
+       QVERIFY((currAudioGetFrame->loadAudio(i))<=currAudioGetFrame->total_len
+               && (currAudioGetFrame->loadAudio(i))>=0 );
     }
 }
 
@@ -104,7 +105,15 @@ void SimplayerTest::test_case2()
 void SimplayerTest::test_case3()
 {
     // test get info
-    QVERIFY((getVideoInfo(fileName))==" major_brand: mp42\n minor_version: 0\n compatible_brands: isommp42\n encoder: Google\n 格式: mov,mp4,m4a,3gp,3g2,mj2\n 时长（s）: 322\n 码率: 675017\n 流数: 2\n fps探测尺寸: -1\n 错误检测系数: 1\n 格式探索分数: 100\n 视频编码器: H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10\n 视频宽度: 640\n 视频高度: 360\n 像素格式: 0\n 音频编码器: AAC (Advanced Audio Coding)\n 音道数: 2\n 音频采样率: 44100\n 音频码率: 95999\n");
+    QVERIFY((getVideoInfo(fileName))==" major_brand: mp42\n minor_version: 0\n"
+                                      " compatible_brands: isommp42\n encoder: Google\n"
+                                      " 格式: mov,mp4,m4a,3gp,3g2,mj2\n 时长（s）: 322\n"
+                                      " 码率: 675017\n 流数: 2\n fps探测尺寸: -1\n"
+                                      " 错误检测系数: 1\n 格式探索分数: 100\n "
+                                      "视频编码器: H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10\n"
+                                      " 视频宽度: 640\n 视频高度: 360\n 像素格式: 0\n"
+                                      " 音频编码器: AAC (Advanced Audio Coding)\n 音道数: 2\n"
+                                      " 音频采样率: 44100\n 音频码率: 95999\n");
 }
 
 void SimplayerTest::test_case4()
@@ -135,7 +144,8 @@ void SimplayerTest::test_case5(){
     QVERIFY((getFileName("C:\\abusrd\\sdf\\abc.mp3"))=="abc.mp3");
 
     // playlist
-    QVector<QString>* playList=readPlayList("C:/Users/hzh30/Desktop/my_new/master/Simplayer/SimplayerTest/playList.dat");
+    QVector<QString>* playList=
+            readPlayList("C:/Users/hzh30/Desktop/my_new/master/Simplayer/SimplayerTest/playList.dat");
     QVERIFY((playList[0][0])=="C:/Users/24508/Videos/Serrini - 油尖旺金毛玲.mp3");
     QVERIFY((playList[0][3])=="D:/Video/up.mp4");
 
