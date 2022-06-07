@@ -32,6 +32,7 @@ SOURCES += tst_simplayertest.cpp
 SOURCES += \
     Widget/VideoFrameDisplay.cpp \
     Widget/VideoSlider.cpp \
+    Widget/videowidget.cpp \
     audioimage.cpp \
     getaudio.cpp \
     mainwindow.cpp \
@@ -43,6 +44,7 @@ SOURCES += \
 HEADERS += \
     Widget/VideoFrameDisplay.h \
     Widget/VideoSlider.h \
+    Widget/videowidget.h \
     audioimage.h \
     getaudio.h \
     mainwindow.h \
