@@ -1,5 +1,5 @@
 
-![player](https://user-images.githubusercontent.com/71301342/177238397-d2113bbf-67e5-4ed5-916d-75ba7cf9d8b0.png)
+![player](https://user-images.githubusercontent.com/71301342/177238397-d2113bbf-67e5-4ed5-916d-75ba7cf9d8b0.png#pic_center)
 
 # Simplayer
 
