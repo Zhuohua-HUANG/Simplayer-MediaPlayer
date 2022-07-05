@@ -1,7 +1,9 @@
 
-![demo](https://user-images.githubusercontent.com/78400045/172119035-a30b5d08-d148-45b4-af80-3e9b558c3d26.jpg)
+![player](https://user-images.githubusercontent.com/71301342/177238397-d2113bbf-67e5-4ed5-916d-75ba7cf9d8b0.png)
 
 # Simplayer
+
+
 
 Simplayer, combined with 'simple' and 'player', is a simple but strong media player. This player uses ffmpeg, OpenGL, and MultiMedia. It was made by Zhuohua Huang and Tianyin Wang.
 
@@ -29,7 +31,7 @@ Simplayer, combined with 'simple' and 'player', is a simple but strong media pla
 * Progress fine-tuning (fast forward, fast rewind): Click the fast forward or fast rewind key to fast forward (rewind) 1s forward or backward, in addition, it can be achieved through shortcuts;
 
 * Audio waveform diagram: If it is an audio file without picture output, the dynamic display of the audio spectrogram can be performed and the playback progress of the audio can be kept consistent;
-
+![demo](https://user-images.githubusercontent.com/78400045/172119035-a30b5d08-d148-45b4-af80-3e9b558c3d26.jpg)
 
 
 
