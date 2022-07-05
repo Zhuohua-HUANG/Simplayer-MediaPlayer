@@ -1,15 +1,17 @@
+<h1 align="center">
+  <img src="https://user-images.githubusercontent.com/71301342/177238397-d2113bbf-67e5-4ed5-916d-75ba7cf9d8b0.png" alt="Simplayer" width="200">
+  <br>Simplayer<br>
+</h1>
 
-![player](https://user-images.githubusercontent.com/71301342/177238397-d2113bbf-67e5-4ed5-916d-75ba7cf9d8b0.png#pic_center)
-
-# Simplayer
 
 
+<p align="center">
+Simplayer, combined with 'simple' and 'player', is a simple but strong media player, which uses ffmpeg, OpenGL, and MultiMedia. Made by Zhuohua Huang and Tianyin Wang.
+</p>
 
-Simplayer, combined with 'simple' and 'player', is a simple but strong media player. This player uses ffmpeg, OpenGL, and MultiMedia. It was made by Zhuohua Huang and Tianyin Wang.
 
-## This player has the following functions: 
+## Features
 
-### 1. basic functions
 * Can play audio &amp; video files in various mainstream formats;
 
 * Playback control includes: pause, play, fast forward, rewind, stop, previous one, next one, 0.5~ 4x speed, choose to loop or play in sequence, and can use shortcut to control, select video file Open and play automatically;
@@ -18,7 +20,7 @@ Simplayer, combined with 'simple' and 'player', is a simple but strong media pla
 
 * Program packaging: use qt's packaging tool to package the program and run it on any platform;
 
-### 2. Advanced Features
+## Premium Features
 
 * Progress bar preview: When the user hovers the mouse over a valid position on the progress bar, an image at the position will be displayed above the corresponding position of the progress bar;
 
@@ -31,6 +33,8 @@ Simplayer, combined with 'simple' and 'player', is a simple but strong media pla
 * Progress fine-tuning (fast forward, fast rewind): Click the fast forward or fast rewind key to fast forward (rewind) 1s forward or backward, in addition, it can be achieved through shortcuts;
 
 * Audio waveform diagram: If it is an audio file without picture output, the dynamic display of the audio spectrogram can be performed and the playback progress of the audio can be kept consistent;
+
+
 ![demo](https://user-images.githubusercontent.com/78400045/172119035-a30b5d08-d148-45b4-af80-3e9b558c3d26.jpg)
 
 
