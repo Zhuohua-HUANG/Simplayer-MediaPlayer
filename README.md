@@ -27,7 +27,7 @@ Simplayer, combined with 'simple' and 'player', is a simple but strong media pla
 
 * Video playback: (non-real-time) The user selects the video file that needs to be reversed, and processes it in the background.  After waiting for a period of time, it can be played from the end of the video to the beginning;
 
-* Double speed playback: achieve 0.5 to 4 times the double speed playback
+* Double speed playback: achieve 0.5 to 4 times the double speed playback;
 
 * View media information: display the metadata information of the current media on the right side of the playlist, and display it in the form of key-value;
 
