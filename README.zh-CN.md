@@ -1,13 +1,13 @@
 <h1 align="center">
   <img src="https://user-images.githubusercontent.com/71301342/177238397-d2113bbf-67e5-4ed5-916d-75ba7cf9d8b0.png" alt="Simplayer" width="200">
-  <br>简播（Simplayer）<br>
+  <br>Simplayer<br>
 </h1>
 <div align="center">
 
   [English](README.md) | [简体中文](README.zh-CN.md)
 </div>
 <p align="center">
-简播（Simplayer），英文由“simple”和“player”组成，是一个由ffmpeg、OpenGL 和 MultiMedia 搭建的简单但强大的多媒体播放器。
+Simplayer（简播），英文由“simple”和“player”组成，是一个由ffmpeg、OpenGL 和 MultiMedia 搭建的简单但强大的多媒体播放器。Made by Zhuohua Huang and Tianyin Wang.
 </p>
 
 
