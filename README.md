@@ -2,9 +2,10 @@
   <img src="https://user-images.githubusercontent.com/71301342/177238397-d2113bbf-67e5-4ed5-916d-75ba7cf9d8b0.png" alt="Simplayer" width="200">
   <br>Simplayer<br>
 </h1>
+<div align="center">
 
-
-
+  [English](README.md) | [简体中文](README.zh-CN.md)
+</div>
 <p align="center">
 Simplayer, combined with 'simple' and 'player', is a simple but strong media player, which uses ffmpeg, OpenGL, and MultiMedia. Made by Zhuohua Huang and Tianyin Wang.
 </p>
