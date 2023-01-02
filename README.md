@@ -3,6 +3,10 @@
   <br>Simplayer<br>
 </h1>
 <div align="center">
+<img src="https://img.shields.io/badge/Qt-v6.2.2-brightgreen"/>
+</div>
+<div align="center">
+<div align="center">
 
   [English](README.md) | [简体中文](README.zh-CN.md)
 </div>
