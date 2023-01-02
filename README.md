@@ -3,6 +3,7 @@
   <br>Simplayer<br>
 </h1>
 <div align="center">
+<img src="https://img.shields.io/badge/build-passing-brightgreen"/>
 <img src="https://img.shields.io/badge/Qt-v6.2.2-brightgreen"/>
 </div>
 <div align="center">
