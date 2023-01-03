@@ -1,10 +1,10 @@
 <h1 align="center">
-  <img src="https://user-images.githubusercontent.com/71301342/177238397-d2113bbf-67e5-4ed5-916d-75ba7cf9d8b0.png" alt="Simplayer" width="200">
+  <img src="https://user-images.githubusercontent.com/71301342/177238397-d2113bbf-67e5-4ed5-916d-75ba7cf9d8b0.png" alt="Simplayer" width="200"/>
   <br>简播<br>
 </h1>
 <div align="center">
-  <img src="https://img.shields.io/badge/build-passing-brightgreen"/>
-  <img src="https://img.shields.io/badge/Qt-v6.2.2-blue"/>
+  <img src="https://img.shields.io/badge/build-passing-brightgreen" />
+  <img src="https://img.shields.io/badge/Qt-v6.2.2-blue" />
 </div>
 <div align="center">
 
@@ -39,8 +39,9 @@
 
 * 音频波形图：如果是没有画面输出的音频文件，可以进行音频频谱图的动态展示并与音频的播放进度保持一致；
 
-
-![demo](https://user-images.githubusercontent.com/78400045/172119035-a30b5d08-d148-45b4-af80-3e9b558c3d26.jpg)
+<div align="center">
+  <img width="850" src="https://user-images.githubusercontent.com/78400045/172119035-a30b5d08-d148-45b4-af80-3e9b558c3d26.jpg" />
+</div>
 
 
 
