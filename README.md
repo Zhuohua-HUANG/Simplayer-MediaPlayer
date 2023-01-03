@@ -15,7 +15,7 @@ Simplayer, combined with 'simple' and 'player', is a simple but strong media pla
 </p>
 
 
-## <div align="center">Features<div>
+## Features
 
 * Can play audio &amp; video files in various mainstream formats;
 
@@ -25,7 +25,7 @@ Simplayer, combined with 'simple' and 'player', is a simple but strong media pla
 
 * Program packaging: use qt's packaging tool to package the program and run it on any platform;
 
-## <div align="center">Premium Features<div>
+## Premium Features
 
 * Progress bar preview: When the user hovers the mouse over a valid position on the progress bar, an image at the position will be displayed above the corresponding position of the progress bar;
 
