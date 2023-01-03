@@ -4,7 +4,7 @@
 </h1>
 <div align="center">
 <img src="https://img.shields.io/badge/build-passing-brightgreen"/>
-<img src="https://img.shields.io/badge/Qt-v6.2.2-brightgreen"/>
+<img src="https://img.shields.io/badge/Qt-v6.2.2-blue"/>
 </div>
 <div align="center">
 
@@ -15,7 +15,7 @@ Simplayer, combined with 'simple' and 'player', is a simple but strong media pla
 </p>
 
 
-## Features
+## <div align="center">Features<div>
 
 * Can play audio &amp; video files in various mainstream formats;
 
@@ -25,7 +25,7 @@ Simplayer, combined with 'simple' and 'player', is a simple but strong media pla
 
 * Program packaging: use qt's packaging tool to package the program and run it on any platform;
 
-## Premium Features
+## <div align="center">Premium Features<div>
 
 * Progress bar preview: When the user hovers the mouse over a valid position on the progress bar, an image at the position will be displayed above the corresponding position of the progress bar;
 
